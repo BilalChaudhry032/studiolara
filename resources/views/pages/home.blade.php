@@ -94,20 +94,14 @@
             </x-section-heading>
 
             <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                @foreach ([
-                    ['name' => 'UI/UX Design', 'blurb' => 'Intuitive, conversion-focused experiences — research, wireframes, prototypes, and polished UI.'],
-                    ['name' => 'Web Development', 'blurb' => 'Fast, scalable websites and web apps with clean architecture and SEO-ready performance.'],
-                    ['name' => 'SaaS Product Development', 'blurb' => 'From MVP scope to multi-tenant systems, subscription flows, and simple-feeling dashboards.'],
-                    ['name' => 'Mobile App Design & Dev', 'blurb' => 'Premium, effortless mobile experiences across iOS and Android, ready for real users.'],
-                    ['name' => 'CMS Development', 'blurb' => 'Elegant, easy-to-manage content systems that give teams control without sacrificing design.'],
-                ] as $service)
+                @foreach ($services as $service)
                     <a href="{{ route('contact') }}" class="group block">
                         <x-card class="h-full transition-colors duration-300 group-hover:border-lime-500">
                             <div class="flex items-start justify-between gap-4">
-                                <p class="text-heading-md font-semibold text-paper">{{ $service['name'] }}</p>
+                                <p class="text-heading-md font-semibold text-paper">{{ $service->title }}</p>
                                 <x-heroicon-o-arrow-up-right class="h-5 w-5 shrink-0 text-paper-dim transition-colors duration-300 group-hover:text-lime-500" />
                             </div>
-                            <p class="mt-3 text-body-sm text-paper-dim">{{ $service['blurb'] }}</p>
+                            <p class="mt-3 text-body-sm text-paper-dim">{{ str($service->description)->limit(110) }}</p>
                         </x-card>
                     </a>
                 @endforeach
@@ -180,44 +174,52 @@
         </x-container>
     </section>
 
-    {{-- PORTFOLIO TEASER (placeholder case studies until Phase 3 seeds real ones) --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container>
-            <div class="flex flex-wrap items-end justify-between gap-4">
-                <x-section-heading eyebrow="Selected Work">
-                    Recent Case Studies
-                </x-section-heading>
-                <x-button href="{{ route('work.index') }}" variant="ghost">View All Projects</x-button>
-            </div>
+    {{-- PORTFOLIO TEASER --}}
+    @if ($featuredCaseStudies->isNotEmpty())
+        <section class="border-t border-ink-800 py-24">
+            <x-container>
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                    <x-section-heading eyebrow="Selected Work">
+                        Recent Case Studies
+                    </x-section-heading>
+                    <x-button href="{{ route('work.index') }}" variant="ghost">View All Projects</x-button>
+                </div>
 
-            <div class="mt-12 grid gap-6 md:grid-cols-3">
-                @foreach ([
-                    ['name' => 'SaaS Platform Redesign', 'tag' => 'SaaS Product Development'],
-                    ['name' => 'E-Commerce Relaunch', 'tag' => 'Web Development'],
-                    ['name' => 'Mobile Booking App', 'tag' => 'Mobile App Design & Dev'],
-                ] as $project)
-                    <a href="{{ route('work.index') }}" class="group block">
-                        <x-placeholder-image :label="$project['name'] . ' — placeholder, real case studies land in Phase 3'" />
-                        <p class="mt-4 text-heading-md font-semibold text-paper">{{ $project['name'] }}</p>
-                        <p class="mt-1 text-body-sm text-paper-dim">{{ $project['tag'] }}</p>
-                    </a>
-                @endforeach
-            </div>
-        </x-container>
-    </section>
+                <div class="mt-12 grid gap-6 md:grid-cols-3">
+                    @foreach ($featuredCaseStudies as $project)
+                        <a href="{{ route('work.show', $project) }}" class="group block">
+                            @if ($project->getFirstMediaUrl('cover'))
+                                <img
+                                    src="{{ $project->getFirstMediaUrl('cover') }}"
+                                    alt="{{ $project->title }}"
+                                    class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover"
+                                >
+                            @else
+                                <x-placeholder-image :label="$project->title" />
+                            @endif
+                            <p class="mt-4 text-heading-md font-semibold text-paper">{{ $project->title }}</p>
+                            <p class="mt-1 text-body-sm text-paper-dim">{{ $project->category }}</p>
+                        </a>
+                    @endforeach
+                </div>
+            </x-container>
+        </section>
+    @endif
 
     {{-- TESTIMONIAL --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container class="mx-auto max-w-3xl text-center">
-            <x-heroicon-s-chat-bubble-left-right class="mx-auto h-8 w-8 text-lime-500" />
-            <blockquote class="mt-6 text-heading-lg font-medium text-paper">
-                &ldquo;Our collaboration with Studio transformed our product vision into a market-leading reality.
-                Their strategic insight, meticulous design, and robust engineering delivered results far beyond
-                our expectations. They truly are partners in innovation.&rdquo;
-            </blockquote>
-            <p class="mt-6 text-body-sm text-paper-dim">— Jane Doe, CEO of Tech Solutions Inc.</p>
-        </x-container>
-    </section>
+    @if ($testimonial)
+        <section class="border-t border-ink-800 py-24">
+            <x-container class="mx-auto max-w-3xl text-center">
+                <x-heroicon-s-chat-bubble-left-right class="mx-auto h-8 w-8 text-lime-500" />
+                <blockquote class="mt-6 text-heading-lg font-medium text-paper">
+                    &ldquo;{{ $testimonial->quote }}&rdquo;
+                </blockquote>
+                <p class="mt-6 text-body-sm text-paper-dim">
+                    — {{ $testimonial->author_name }}{{ $testimonial->author_title ? ', ' . $testimonial->author_title : '' }}{{ $testimonial->company ? ' of ' . $testimonial->company : '' }}
+                </p>
+            </x-container>
+        </section>
+    @endif
 
     {{-- FOOTER CTA --}}
     <section class="border-t border-ink-800 py-24">

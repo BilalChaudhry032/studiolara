@@ -19,10 +19,12 @@
         </x-container>
     </section>
 
+    @php($tagStrip = $services->pluck('title'))
+
     {{-- SERVICE TAG STRIP (static row for now — becomes a marquee divider in Phase 4) --}}
     <section class="border-y border-ink-800 py-6">
         <x-container class="flex flex-wrap justify-center gap-3">
-            @foreach (['UI/UX Design', 'Web Development', 'SaaS Product Development', 'Mobile App Design & Dev', 'CMS Development'] as $tag)
+            @foreach ($tagStrip as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
         </x-container>
@@ -31,65 +33,35 @@
     {{-- DETAILED SERVICE CARDS --}}
     <section class="py-24">
         <x-container class="space-y-8">
-            @foreach ([
-                [
-                    'name' => 'UI/UX Design',
-                    'desc' => 'We design intuitive, conversion-focused digital experiences that connect brand, strategy, and usability. Deliverables include user research, journey mapping, wireframes, prototypes, design systems, and polished UI for SaaS dashboards, marketing sites, and mobile products.',
-                    'tools' => 'Figma, FigJam, Adobe XD, design systems, accessibility best practices, usability testing.',
-                    'bestFor' => 'Startups, product teams, and companies redesigning complex experiences or launching new digital products.',
-                    'useCases' => 'SaaS onboarding, dashboard redesigns, mobile app flows, product validation, high-converting landing pages.',
-                ],
-                [
-                    'name' => 'Web Development',
-                    'desc' => 'We build fast, scalable websites and web applications with clean architecture and performance in mind. From interactive marketing websites to robust platforms, we develop responsive experiences that are SEO-ready, maintainable, and built to support growth.',
-                    'tools' => 'React, Next.js, TypeScript, modern CMS integrations, APIs, performance optimization, technical SEO.',
-                    'bestFor' => 'Growth-stage businesses, founders, and teams that need a high-performance digital presence or custom web product.',
-                    'useCases' => 'Corporate websites, product launch pages, platform experiences, lead generation sites, custom web apps.',
-                ],
-                [
-                    'name' => 'SaaS Product Development',
-                    'desc' => 'We take SaaS ideas from concept to launch with product strategy, UX, and engineering aligned from day one. We help define MVP scope, build multi-tenant systems, design subscription flows, and create dashboards that make complex workflows feel simple.',
-                    'tools' => 'Full-stack development, subscription architecture, admin dashboards, analytics, API-first systems.',
-                    'bestFor' => 'SaaS founders, product-led teams, and businesses launching software products or expanding platform capabilities.',
-                    'useCases' => 'MVPs, customer portals, internal tools, subscription products, enterprise-ready software platforms.',
-                ],
-                [
-                    'name' => 'Mobile App Design & Dev',
-                    'desc' => 'We create mobile experiences that feel premium, clear, and effortless across iOS and Android. Our process combines product thinking, interaction design, and cross-platform engineering to deliver apps ready for real users and real-world growth.',
-                    'tools' => 'React Native, mobile UX patterns, app prototyping, user testing, design systems, API integrations.',
-                    'bestFor' => 'Consumer apps, service businesses, startups, and teams bringing an app idea to market.',
-                    'useCases' => 'Booking apps, customer portals, companion apps, internal mobile tools, multi-device ecosystems.',
-                ],
-                [
-                    'name' => 'CMS Development',
-                    'desc' => 'We build elegant, easy-to-manage content systems that give teams control without sacrificing design quality. Whether you need a marketing site, ecommerce experience, or content-rich platform, we create flexible CMS setups tailored to your workflow.',
-                    'tools' => 'Webflow, WordPress, Shopify, HubSpot, Squarespace, Magento, content modeling, custom templates.',
-                    'bestFor' => 'Marketing teams, content-led brands, ecommerce businesses, and organizations that update content frequently.',
-                    'useCases' => 'Launch sites, blogs, ecommerce storefronts, campaign pages, resource hubs, scalable content operations.',
-                ],
-            ] as $service)
+            @foreach ($services as $service)
                 <x-card class="lg:p-10">
                     <div class="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
                         <div>
-                            <p class="text-heading-lg font-semibold text-paper">{{ $service['name'] }}</p>
-                            <p class="mt-4 text-body-md text-paper-dim">{{ $service['desc'] }}</p>
+                            <p class="text-heading-lg font-semibold text-paper">{{ $service->title }}</p>
+                            <p class="mt-4 text-body-md text-paper-dim">{{ $service->description }}</p>
                             <div class="mt-6">
                                 <x-button href="{{ route('contact') }}" variant="outline">Request This Service</x-button>
                             </div>
                         </div>
                         <div class="space-y-4 border-t border-ink-700 pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-                            <div>
-                                <p class="text-body-sm uppercase tracking-widest text-muted">Tools & Technologies</p>
-                                <p class="mt-1 text-body-sm text-paper-dim">{{ $service['tools'] }}</p>
-                            </div>
-                            <div>
-                                <p class="text-body-sm uppercase tracking-widest text-muted">Best For</p>
-                                <p class="mt-1 text-body-sm text-paper-dim">{{ $service['bestFor'] }}</p>
-                            </div>
-                            <div>
-                                <p class="text-body-sm uppercase tracking-widest text-muted">Use Cases</p>
-                                <p class="mt-1 text-body-sm text-paper-dim">{{ $service['useCases'] }}</p>
-                            </div>
+                            @if ($service->tools_technologies)
+                                <div>
+                                    <p class="text-body-sm uppercase tracking-widest text-muted">Tools & Technologies</p>
+                                    <p class="mt-1 text-body-sm text-paper-dim">{{ implode(', ', $service->tools_technologies) }}</p>
+                                </div>
+                            @endif
+                            @if ($service->best_for)
+                                <div>
+                                    <p class="text-body-sm uppercase tracking-widest text-muted">Best For</p>
+                                    <p class="mt-1 text-body-sm text-paper-dim">{{ $service->best_for }}</p>
+                                </div>
+                            @endif
+                            @if ($service->use_cases)
+                                <div>
+                                    <p class="text-body-sm uppercase tracking-widest text-muted">Use Cases</p>
+                                    <p class="mt-1 text-body-sm text-paper-dim">{{ implode(', ', $service->use_cases) }}</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </x-card>
@@ -100,7 +72,7 @@
     {{-- SERVICE TAG STRIP (repeated as section divider) --}}
     <section class="border-y border-ink-800 py-6">
         <x-container class="flex flex-wrap justify-center gap-3">
-            @foreach (['UI/UX Design', 'Web Development', 'SaaS Product Development', 'Mobile App Design & Dev', 'CMS Development'] as $tag)
+            @foreach ($tagStrip as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
         </x-container>
@@ -175,48 +147,56 @@
     {{-- SERVICE TAG STRIP (again) --}}
     <section class="border-y border-ink-800 py-6">
         <x-container class="flex flex-wrap justify-center gap-3">
-            @foreach (['UI/UX Design', 'Web Development', 'SaaS Product Development', 'Mobile App Design & Dev', 'CMS Development'] as $tag)
+            @foreach ($tagStrip as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
         </x-container>
     </section>
 
     {{-- PORTFOLIO TEASER --}}
-    <section class="py-24">
-        <x-container>
-            <div class="flex flex-wrap items-end justify-between gap-4">
-                <x-section-heading eyebrow="Selected Work">Recent Case Studies</x-section-heading>
-                <x-button href="{{ route('work.index') }}" variant="ghost">View All Projects</x-button>
-            </div>
+    @if ($featuredCaseStudies->isNotEmpty())
+        <section class="py-24">
+            <x-container>
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                    <x-section-heading eyebrow="Selected Work">Recent Case Studies</x-section-heading>
+                    <x-button href="{{ route('work.index') }}" variant="ghost">View All Projects</x-button>
+                </div>
 
-            <div class="mt-12 grid gap-6 md:grid-cols-3">
-                @foreach ([
-                    ['name' => 'SaaS Platform Redesign', 'tag' => 'SaaS Product Development'],
-                    ['name' => 'E-Commerce Relaunch', 'tag' => 'Web Development'],
-                    ['name' => 'Mobile Booking App', 'tag' => 'Mobile App Design & Dev'],
-                ] as $project)
-                    <a href="{{ route('work.index') }}" class="group block">
-                        <x-placeholder-image :label="$project['name'] . ' — placeholder, real case studies land in Phase 3'" />
-                        <p class="mt-4 text-heading-md font-semibold text-paper">{{ $project['name'] }}</p>
-                        <p class="mt-1 text-body-sm text-paper-dim">{{ $project['tag'] }}</p>
-                    </a>
-                @endforeach
-            </div>
-        </x-container>
-    </section>
+                <div class="mt-12 grid gap-6 md:grid-cols-3">
+                    @foreach ($featuredCaseStudies as $project)
+                        <a href="{{ route('work.show', $project) }}" class="group block">
+                            @if ($project->getFirstMediaUrl('cover'))
+                                <img
+                                    src="{{ $project->getFirstMediaUrl('cover') }}"
+                                    alt="{{ $project->title }}"
+                                    class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover"
+                                >
+                            @else
+                                <x-placeholder-image :label="$project->title" />
+                            @endif
+                            <p class="mt-4 text-heading-md font-semibold text-paper">{{ $project->title }}</p>
+                            <p class="mt-1 text-body-sm text-paper-dim">{{ $project->category }}</p>
+                        </a>
+                    @endforeach
+                </div>
+            </x-container>
+        </section>
+    @endif
 
     {{-- TESTIMONIAL --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container class="mx-auto max-w-3xl text-center">
-            <x-heroicon-s-chat-bubble-left-right class="mx-auto h-8 w-8 text-lime-500" />
-            <blockquote class="mt-6 text-heading-lg font-medium text-paper">
-                &ldquo;Our collaboration with Studio transformed our product vision into a market-leading reality.
-                Their strategic insight, meticulous design, and robust engineering delivered results far beyond
-                our expectations. They truly are partners in innovation.&rdquo;
-            </blockquote>
-            <p class="mt-6 text-body-sm text-paper-dim">— Jane Doe, CEO of Tech Solutions Inc.</p>
-        </x-container>
-    </section>
+    @if ($testimonial)
+        <section class="border-t border-ink-800 py-24">
+            <x-container class="mx-auto max-w-3xl text-center">
+                <x-heroicon-s-chat-bubble-left-right class="mx-auto h-8 w-8 text-lime-500" />
+                <blockquote class="mt-6 text-heading-lg font-medium text-paper">
+                    &ldquo;{{ $testimonial->quote }}&rdquo;
+                </blockquote>
+                <p class="mt-6 text-body-sm text-paper-dim">
+                    — {{ $testimonial->author_name }}{{ $testimonial->author_title ? ', ' . $testimonial->author_title : '' }}{{ $testimonial->company ? ' of ' . $testimonial->company : '' }}
+                </p>
+            </x-container>
+        </section>
+    @endif
 
     {{-- FOOTER CTA --}}
     <section class="border-t border-ink-800 py-24">

@@ -19,97 +19,30 @@
     {{-- PRICING TIERS --}}
     <section class="border-t border-ink-800 py-24">
         <x-container class="grid gap-8 lg:grid-cols-3">
-            {{-- Starter --}}
-            <x-card class="flex flex-col">
-                <p class="text-body-sm uppercase tracking-widest text-muted">Starter Plan</p>
-                <p class="mt-2 text-heading-lg font-semibold text-paper">MVP Launch</p>
-                <p class="mt-4 text-display-md font-semibold text-lime-500">$2K–$7.5K</p>
-                <p class="text-body-sm text-paper-dim">Timeline: 3–8 weeks</p>
-                <p class="mt-4 text-body-sm text-paper-dim">Best for startups &amp; founders validating an idea.</p>
-                <ul class="mt-6 flex-1 space-y-3">
-                    @foreach ([
-                        'Product discovery & strategy session',
-                        'UX wireframes + UI design (8–12 screens)',
-                        'Website design & development (4–10 pages)',
-                        'Responsive design for all devices',
-                        'CMS setup (Webflow, WordPress, or Shopify) or basic custom frontend',
-                        'Basic SEO optimization',
-                        'Contact forms & email integration',
-                        '2 revision cycles',
-                        'Deployment & launch support',
-                        '30 days post-launch support',
-                    ] as $item)
-                        <li class="flex items-start gap-3 text-body-sm text-paper-dim">
-                            <x-heroicon-o-check class="mt-0.5 h-4 w-4 shrink-0 text-lime-500" />
-                            {{ $item }}
-                        </li>
-                    @endforeach
-                </ul>
-                <x-button href="{{ route('contact') }}" variant="outline" class="mt-8 w-full">Start a Project</x-button>
-            </x-card>
-
-            {{-- Growth (featured) --}}
-            <x-card class="flex flex-col border-lime-500">
-                <p class="text-body-sm uppercase tracking-widest text-lime-500">Growth Plan</p>
-                <p class="mt-2 text-heading-lg font-semibold text-paper">Full Product Build</p>
-                <p class="mt-4 text-display-md font-semibold text-lime-500">$7K–$20K</p>
-                <p class="text-body-sm text-paper-dim">Timeline: 3–6 months</p>
-                <p class="mt-4 text-body-sm text-paper-dim">Best for SaaS startups &amp; growing businesses ready to scale.</p>
-                <ul class="mt-6 flex-1 space-y-3">
-                    @foreach ([
-                        'Complete product strategy & user flows',
-                        'Full UI/UX design system (50+ screens)',
-                        'Website design & development (10–25 pages)',
-                        'Full-stack development with custom backend',
-                        'Database architecture & API design',
-                        'User authentication & admin dashboard',
-                        'Advanced CMS integration or custom development',
-                        'Payment processing integration',
-                        'Email automation & notifications',
-                        'Analytics & conversion tracking',
-                        '3 revision cycles',
-                        'Performance optimization & SEO',
-                        '60 days post-launch support & bug fixes',
-                    ] as $item)
-                        <li class="flex items-start gap-3 text-body-sm text-paper-dim">
-                            <x-heroicon-o-check class="mt-0.5 h-4 w-4 shrink-0 text-lime-500" />
-                            {{ $item }}
-                        </li>
-                    @endforeach
-                </ul>
-                <x-button href="{{ route('contact') }}" variant="primary" class="mt-8 w-full">Start a Project</x-button>
-            </x-card>
-
-            {{-- Scale --}}
-            <x-card class="flex flex-col">
-                <p class="text-body-sm uppercase tracking-widest text-muted">Scale Plan</p>
-                <p class="mt-2 text-heading-lg font-semibold text-paper">Enterprise Solution</p>
-                <p class="mt-4 text-display-md font-semibold text-lime-500">$25K+</p>
-                <p class="text-body-sm text-paper-dim">Timeline: 6–12+ months</p>
-                <p class="mt-4 text-body-sm text-paper-dim">Best for established companies &amp; complex enterprise systems.</p>
-                <ul class="mt-6 flex-1 space-y-3">
-                    @foreach ([
-                        'Dedicated product & development team',
-                        'Advanced product architecture & strategy',
-                        'Enterprise-grade design system',
-                        'Multi-tenant SaaS platform development',
-                        'Complex database architecture',
-                        'Advanced security & compliance features',
-                        'AI/ML integrations & automation',
-                        'Third-party integrations (CRM, ERP, analytics)',
-                        'Custom admin & reporting dashboards',
-                        'Load testing & performance optimization',
-                        'Unlimited revisions during development',
-                        'Priority communication & dedicated account manager',
-                    ] as $item)
-                        <li class="flex items-start gap-3 text-body-sm text-paper-dim">
-                            <x-heroicon-o-check class="mt-0.5 h-4 w-4 shrink-0 text-lime-500" />
-                            {{ $item }}
-                        </li>
-                    @endforeach
-                </ul>
-                <x-button href="{{ route('contact') }}" variant="outline" class="mt-8 w-full">Talk to Us</x-button>
-            </x-card>
+            @foreach ($plans as $plan)
+                <x-card class="flex flex-col {{ $plan->featured ? 'border-lime-500' : '' }}">
+                    <p class="text-body-sm uppercase tracking-widest {{ $plan->featured ? 'text-lime-500' : 'text-muted' }}">{{ $plan->name }}</p>
+                    <p class="mt-2 text-heading-lg font-semibold text-paper">{{ $plan->tagline }}</p>
+                    <p class="mt-4 text-display-md font-semibold text-lime-500">{{ $plan->price_range }}</p>
+                    @if ($plan->timeline)
+                        <p class="text-body-sm text-paper-dim">Timeline: {{ $plan->timeline }}</p>
+                    @endif
+                    @if ($plan->best_for)
+                        <p class="mt-4 text-body-sm text-paper-dim">{{ $plan->best_for }}</p>
+                    @endif
+                    <ul class="mt-6 flex-1 space-y-3">
+                        @foreach ($plan->deliverables ?? [] as $item)
+                            <li class="flex items-start gap-3 text-body-sm text-paper-dim">
+                                <x-heroicon-o-check class="mt-0.5 h-4 w-4 shrink-0 text-lime-500" />
+                                {{ $item }}
+                            </li>
+                        @endforeach
+                    </ul>
+                    <x-button href="{{ route('contact') }}" :variant="$plan->featured ? 'primary' : 'outline'" class="mt-8 w-full">
+                        {{ $plan->featured ? 'Start a Project' : 'Talk to Us' }}
+                    </x-button>
+                </x-card>
+            @endforeach
         </x-container>
 
         <p class="mx-auto mt-10 max-w-3xl text-center text-body-sm text-paper-dim">
