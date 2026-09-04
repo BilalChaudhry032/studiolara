@@ -1,94 +1,234 @@
-<x-layout title="Home">
-    {{--
-        Temporary Phase 1 preview: this is a living style guide so the design
-        system (type scale, color tokens, buttons, cards) can be reviewed
-        before Phase 2 replaces this with the real homepage section-by-section
-        build (hero, marquee, services grid, process, stats, portfolio,
-        testimonials, footer CTA per PROJECT_PLAN_AND_PROGRESS.md §1).
-    --}}
-
-    <x-container class="py-24">
-        <p class="text-eyebrow uppercase tracking-widest text-lime-500">Phase 1 — Design System Preview</p>
-        <h1 class="mt-4 text-display-xl font-semibold text-paper">
-            We Design & Build Digital Products That Actually Grow Businesses
-        </h1>
-        <p class="mt-6 max-w-2xl text-body-lg text-paper-dim">
-            This is a temporary preview of the type scale, color tokens, and base
-            components — not the real homepage. Phase 2 replaces this with the
-            full section-by-section build.
+<x-layout
+    title="Home"
+    description="We design & build digital products that actually grow businesses — strategy-first discovery, premium UX/UI, and scalable engineering for ambitious startups and growth-stage teams."
+>
+    {{-- HERO --}}
+    <section class="relative overflow-hidden py-24 lg:py-32">
+        <p
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-x-0 top-8 select-none whitespace-nowrap text-center text-[18vw] font-semibold leading-none text-ink-800/60 lg:text-[14rem]"
+        >
+            STUDIO
         </p>
 
-        <div class="mt-8 flex flex-wrap gap-4">
-            <x-button href="{{ route('contact') }}" variant="primary">Book Your Free Strategy Call Today</x-button>
-            <x-button href="{{ route('work.index') }}" variant="outline">See Case Studies & Recent Work</x-button>
-            <x-button variant="ghost">Ghost action</x-button>
-        </div>
-    </x-container>
+        <x-container class="relative">
+            <div class="mx-auto max-w-4xl text-center">
+                <h1 class="text-display-xl font-semibold text-paper">
+                    We Design &amp; Build Digital Products That Actually Grow Businesses
+                </h1>
+                <p class="mx-auto mt-6 max-w-2xl text-body-lg text-paper-dim">
+                    We help ambitious startups and growing companies turn ideas into polished digital
+                    experiences that attract attention, convert visitors, and support long-term business growth.
+                </p>
 
-    <x-container class="space-y-16 pb-24">
-        <section>
-            <p class="mb-6 text-eyebrow uppercase tracking-widest text-muted">Type scale</p>
-            <div class="space-y-4">
-                <p class="text-display-xl font-semibold text-paper">Display XL</p>
-                <p class="text-display-lg font-semibold text-paper">Display LG</p>
-                <p class="text-display-md font-semibold text-paper">Display MD</p>
-                <p class="text-heading-lg font-semibold text-paper">Heading LG</p>
-                <p class="text-heading-md font-semibold text-paper">Heading MD</p>
-                <p class="text-body-lg text-paper-dim">Body LG — the quick brown fox jumps over the lazy dog.</p>
-                <p class="text-body-md text-paper-dim">Body MD — the quick brown fox jumps over the lazy dog.</p>
-                <p class="text-body-sm text-paper-dim">Body SM — the quick brown fox jumps over the lazy dog.</p>
-                <p class="text-eyebrow uppercase tracking-widest text-lime-500">Eyebrow label</p>
+                <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+                    <x-button href="{{ route('contact') }}" variant="primary">Book Your Free Strategy Call Today</x-button>
+                    <x-button href="{{ route('work.index') }}" variant="outline">See Case Studies &amp; Recent Work</x-button>
+                </div>
+
+                <p class="mt-8 text-body-sm uppercase tracking-widest text-muted">
+                    8+ Years in Business &nbsp;·&nbsp; 150+ Projects Completed &nbsp;·&nbsp; 60+ Clients Served
+                </p>
             </div>
-        </section>
 
-        <section>
-            <p class="mb-6 text-eyebrow uppercase tracking-widest text-muted">Color tokens</p>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <div class="space-y-2">
-                    <div class="h-16 rounded-xl bg-ink-950 ring-1 ring-ink-700"></div>
-                    <p class="text-body-sm text-paper-dim">ink-950</p>
-                </div>
-                <div class="space-y-2">
-                    <div class="h-16 rounded-xl bg-ink-900"></div>
-                    <p class="text-body-sm text-paper-dim">ink-900</p>
-                </div>
-                <div class="space-y-2">
-                    <div class="h-16 rounded-xl bg-lime-500"></div>
-                    <p class="text-body-sm text-paper-dim">lime-500 (accent)</p>
-                </div>
-                <div class="space-y-2">
-                    <div class="h-16 rounded-xl bg-paper"></div>
-                    <p class="text-body-sm text-paper-dim">paper</p>
-                </div>
+            <div class="mx-auto mt-16 max-w-3xl">
+                <x-placeholder-image label="Product showcase reel (video in Phase 4)" ratio="aspect-video" />
             </div>
-        </section>
+        </x-container>
+    </section>
 
-        <section>
-            <p class="mb-6 text-eyebrow uppercase tracking-widest text-muted">Section heading component</p>
+    {{-- CLIENT LOGOS (static grid for now — becomes a marquee in Phase 4) --}}
+    <section class="border-y border-ink-800 py-12">
+        <x-container>
+            <p class="text-center text-body-sm uppercase tracking-widest text-muted">
+                Trusted by founders across the US &amp; EU
+            </p>
+            <div class="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+                @for ($i = 1; $i <= 6; $i++)
+                    <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" />
+                @endfor
+            </div>
+        </x-container>
+    </section>
+
+    {{-- VALUE PROPOSITION / BENEFIT CARDS --}}
+    <section class="py-24">
+        <x-container>
             <x-section-heading
                 eyebrow="Our Approach"
-                subtext="Every section is structured to build trust, communicate value, and guide visitors toward a booking action."
+                align="center"
+                subtext="Most agencies focus on deliverables. We focus on outcomes — blending product strategy, conversion-focused design, and robust engineering."
+                class="mx-auto"
             >
-                Not Just Design. Not Just Development.
+                Not Just Design. Not Just Development. Real Product Impact.
             </x-section-heading>
-        </section>
 
-        <section>
-            <p class="mb-6 text-eyebrow uppercase tracking-widest text-muted">Card component</p>
-            <div class="grid gap-6 sm:grid-cols-3">
+            <div class="mt-12 grid gap-6 sm:grid-cols-3">
                 <x-card>
-                    <p class="text-heading-md font-semibold text-paper">Brand Clarity</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Sharpen positioning and messaging so the right clients self-select.</p>
+                    <p class="text-heading-md font-semibold text-paper">Product-First Thinking</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">
+                        We design around user journeys, business objectives, and product-market fit — not just visuals.
+                    </p>
                 </x-card>
                 <x-card>
-                    <p class="text-heading-md font-semibold text-paper">Growth Momentum</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Design and build that compounds — faster launches, less rework.</p>
+                    <p class="text-heading-md font-semibold text-paper">Conversion-Driven Design</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">
+                        Every page, interaction, and CTA is optimized to move visitors forward, not just look good.
+                    </p>
                 </x-card>
                 <x-card>
-                    <p class="text-heading-md font-semibold text-paper">Measurable Results</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Every decision tracked against real conversion and engagement data.</p>
+                    <p class="text-heading-md font-semibold text-paper">Scalable Engineering</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">
+                        Clean, robust development architecture built to grow with your team, roadmap, and traffic.
+                    </p>
                 </x-card>
             </div>
-        </section>
-    </x-container>
+        </x-container>
+    </section>
+
+    {{-- SERVICES GRID --}}
+    <section class="border-t border-ink-800 py-24">
+        <x-container>
+            <x-section-heading eyebrow="What We Do" subtext="Five core disciplines, one accountable team.">
+                Services Built Around Business Outcomes
+            </x-section-heading>
+
+            <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                @foreach ([
+                    ['name' => 'UI/UX Design', 'blurb' => 'Intuitive, conversion-focused experiences — research, wireframes, prototypes, and polished UI.'],
+                    ['name' => 'Web Development', 'blurb' => 'Fast, scalable websites and web apps with clean architecture and SEO-ready performance.'],
+                    ['name' => 'SaaS Product Development', 'blurb' => 'From MVP scope to multi-tenant systems, subscription flows, and simple-feeling dashboards.'],
+                    ['name' => 'Mobile App Design & Dev', 'blurb' => 'Premium, effortless mobile experiences across iOS and Android, ready for real users.'],
+                    ['name' => 'CMS Development', 'blurb' => 'Elegant, easy-to-manage content systems that give teams control without sacrificing design.'],
+                ] as $service)
+                    <a href="{{ route('contact') }}" class="group block">
+                        <x-card class="h-full transition-colors duration-300 group-hover:border-lime-500">
+                            <div class="flex items-start justify-between gap-4">
+                                <p class="text-heading-md font-semibold text-paper">{{ $service['name'] }}</p>
+                                <x-heroicon-o-arrow-up-right class="h-5 w-5 shrink-0 text-paper-dim transition-colors duration-300 group-hover:text-lime-500" />
+                            </div>
+                            <p class="mt-3 text-body-sm text-paper-dim">{{ $service['blurb'] }}</p>
+                        </x-card>
+                    </a>
+                @endforeach
+            </div>
+        </x-container>
+    </section>
+
+    {{-- PROCESS --}}
+    <section class="border-t border-ink-800 py-24">
+        <x-container>
+            <x-section-heading eyebrow="Our Process" subtext="A methodology designed for clarity and momentum.">
+                Discover. Define. Design. Build. Refine.
+            </x-section-heading>
+
+            <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+                @foreach ([
+                    ['step' => '01', 'name' => 'Discover', 'blurb' => 'Understand your users, business model, and goals.'],
+                    ['step' => '02', 'name' => 'Define', 'blurb' => 'Translate research into a focused strategy and scope.'],
+                    ['step' => '03', 'name' => 'Design', 'blurb' => 'Design with conversion, clarity, and confidence in mind.'],
+                    ['step' => '04', 'name' => 'Build', 'blurb' => 'Build with scalability, performance, and stability at the core.'],
+                    ['step' => '05', 'name' => 'Refine', 'blurb' => 'Refine based on real feedback and performance data.'],
+                ] as $step)
+                    <div>
+                        <p class="text-eyebrow text-lime-500">{{ $step['step'] }}</p>
+                        <p class="mt-3 text-heading-md font-semibold text-paper">{{ $step['name'] }}</p>
+                        <p class="mt-2 text-body-sm text-paper-dim">{{ $step['blurb'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </x-container>
+    </section>
+
+    {{-- WHY CHOOSE US + STATS --}}
+    <section class="border-t border-ink-800 py-24">
+        <x-container class="grid gap-16 lg:grid-cols-2 lg:items-center">
+            <div>
+                <x-section-heading eyebrow="Why Choose Us">
+                    Senior-Level Thinking, From Discovery Through Launch
+                </x-section-heading>
+                <ul class="mt-8 space-y-4">
+                    @foreach ([
+                        'Senior-level thinking from discovery through launch',
+                        'Tailored solutions instead of one-size-fits-all templates',
+                        'Clear priorities that reduce wasted time and scope creep',
+                        'Design and development aligned around measurable business outcomes',
+                    ] as $point)
+                        <li class="flex items-start gap-3 text-body-md text-paper-dim">
+                            <x-heroicon-o-check-circle class="mt-0.5 h-5 w-5 shrink-0 text-lime-500" />
+                            {{ $point }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <div class="grid grid-cols-3 gap-6 rounded-2xl border border-ink-700 bg-ink-900 p-8 text-center">
+                {{-- Static numbers for now; Phase 4 swaps these for the odometer-style counter component --}}
+                <div>
+                    <p class="text-display-md font-semibold text-lime-500">150+</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">Projects Delivered</p>
+                </div>
+                <div>
+                    <p class="text-display-md font-semibold text-lime-500">8+</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">Years in Business</p>
+                </div>
+                <div>
+                    <p class="text-display-md font-semibold text-lime-500">40%</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">Avg. Conversion Lift</p>
+                </div>
+            </div>
+        </x-container>
+    </section>
+
+    {{-- PORTFOLIO TEASER (placeholder case studies until Phase 3 seeds real ones) --}}
+    <section class="border-t border-ink-800 py-24">
+        <x-container>
+            <div class="flex flex-wrap items-end justify-between gap-4">
+                <x-section-heading eyebrow="Selected Work">
+                    Recent Case Studies
+                </x-section-heading>
+                <x-button href="{{ route('work.index') }}" variant="ghost">View All Projects</x-button>
+            </div>
+
+            <div class="mt-12 grid gap-6 md:grid-cols-3">
+                @foreach ([
+                    ['name' => 'SaaS Platform Redesign', 'tag' => 'SaaS Product Development'],
+                    ['name' => 'E-Commerce Relaunch', 'tag' => 'Web Development'],
+                    ['name' => 'Mobile Booking App', 'tag' => 'Mobile App Design & Dev'],
+                ] as $project)
+                    <a href="{{ route('work.index') }}" class="group block">
+                        <x-placeholder-image :label="$project['name'] . ' — placeholder, real case studies land in Phase 3'" />
+                        <p class="mt-4 text-heading-md font-semibold text-paper">{{ $project['name'] }}</p>
+                        <p class="mt-1 text-body-sm text-paper-dim">{{ $project['tag'] }}</p>
+                    </a>
+                @endforeach
+            </div>
+        </x-container>
+    </section>
+
+    {{-- TESTIMONIAL --}}
+    <section class="border-t border-ink-800 py-24">
+        <x-container class="mx-auto max-w-3xl text-center">
+            <x-heroicon-s-chat-bubble-left-right class="mx-auto h-8 w-8 text-lime-500" />
+            <blockquote class="mt-6 text-heading-lg font-medium text-paper">
+                &ldquo;Our collaboration with Studio transformed our product vision into a market-leading reality.
+                Their strategic insight, meticulous design, and robust engineering delivered results far beyond
+                our expectations. They truly are partners in innovation.&rdquo;
+            </blockquote>
+            <p class="mt-6 text-body-sm text-paper-dim">— Jane Doe, CEO of Tech Solutions Inc.</p>
+        </x-container>
+    </section>
+
+    {{-- FOOTER CTA --}}
+    <section class="border-t border-ink-800 py-24">
+        <x-container class="mx-auto max-w-2xl text-center">
+            <h2 class="text-display-md font-semibold text-paper">Let's Build Something Great Together</h2>
+            <p class="mt-4 text-body-lg text-paper-dim">
+                Ready to turn your idea into a digital product? We're here to listen, strategize, and bring your vision to life.
+            </p>
+            <div class="mt-8">
+                <x-button href="{{ route('contact') }}" variant="primary">Book Your Free Strategy Call Today</x-button>
+            </div>
+        </x-container>
+    </section>
 </x-layout>
