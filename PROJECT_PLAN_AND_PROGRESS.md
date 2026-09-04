@@ -129,6 +129,12 @@ Confirmed from markup, appearing consistently across all 5 pages: heavy, repeate
   - **All `artisan`/`composer` commands for this project must use `C:\php\8.3\php.exe`** (composer.phar lives at `C:\Users\User\.config\herd-lite\bin\composer.phar`, which works fine with any PHP version — it's just the Herd-bundled *PHP binary* that's unusable, not its composer.phar). Example: `C:\php\8.3\php.exe C:\Users\User\.config\herd-lite\bin\composer.phar require ...` / `C:\php\8.3\php.exe artisan migrate`.
   - For local serving, use `php artisan serve` (with the 8.3 binary above) rather than XAMPP's Apache. If Apache-via-XAMPP is wanted later, it needs a vhost pointed at `studio/public` (not `studio/` directly, which would expose the whole app source) with its PHP handler swapped to this same PHP 8.3 build.
 
+## 2.6 Tooling decisions (2026-09-05)
+
+- **No additional tools installed speculatively.** Considered now vs. later: Mailpit (SMTP catcher, for Phase 5 contact-form email QA), Lighthouse CLI (Phase 6 performance audits), Larastan/PHPStan (static analysis). User's call: add each only when its phase actually needs it, not before. Revisit Mailpit specifically at the start of Phase 5, Lighthouse at the start of Phase 6.
+- **Images/placeholders**: no real photos, team headshots, client logos, or case-study screenshots exist yet. Phase 2+ will use neutral placeholders (gradient/pattern blocks or simple placeholder boxes, not fake stock photos pretending to be real clients/team) so layouts are provably correct, swapped for real assets the moment they're provided — not held up waiting on them.
+- **Note for future sessions**: Blade Icons + Heroicons (`blade-ui-kit/blade-icons`, `blade-ui-kit/blade-heroicons`) are already installed as a Filament dependency — use `<x-heroicon-o-{name} />` / `<x-heroicon-s-{name} />` components for icons (arrows, checkmarks, social links, etc.) going forward instead of hand-writing inline SVGs like Phase 1's nav did.
+
 ---
 
 ## 3. Tech Stack
