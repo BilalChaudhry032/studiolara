@@ -1,8 +1,10 @@
 # Agency Website — Laravel Rebuild
 Reference inspiration: tapline.studio (and cieden.com / designjoy.co / momentumdesignlab.com per SRS doc)
-Content source: Design-and-Development-Agency-Website SRS/FSD PDF + [PPT — pending upload]
+Content source: Design-and-Development-Agency-Website SRS/FSD PDF (confirmed 2026-09-05 as the same deliverable as "the PPT" — no separate content deck is coming; see §6)
 
 > **How to use this file:** This is the single source of truth for scope + status. Update the checkboxes and the "Log" section at the bottom every session (yourself or Claude Code). Don't delete finished items — check them off, so the history stays visible.
+
+> **Standing process rule (added 2026-09-05):** After finishing every section of the website — not just full pages, each distinct section within a page (hero, marquee, services grid, process steps, stats block, testimonials, footer CTA, etc.) — go compare that section's design and animation against the equivalent section on **https://tapline.studio/** and correct it if the comparison turns up something worth fixing. This isn't about copying tapline's colors/copy (this project has its own near-black/paper/electric-lime palette) — it's a quality-bar and interaction-language check against the confirmed reference analysis in §1. Use the Playwright QA tooling at `C:\tools\qa-browser\run.mjs` to screenshot both sides. Do this per-section, right after building it and before checking it off below — not batched at the end of a phase. Note the outcome in that session's Log entry ("compared X against tapline, matched" / "...found Y, fixed").
 
 ---
 
