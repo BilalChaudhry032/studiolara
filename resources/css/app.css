@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        @apply scroll-smooth;
+    }
+
+    body {
+        @apply bg-ink-950 text-paper font-sans antialiased;
+    }
+
+    ::selection {
+        @apply bg-lime-500 text-ink-950;
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-lime-500 ring-offset-2 ring-offset-ink-950;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    /* Hard requirement, not optional polish: every animation utility in this
+       project must check this before running. See resources/js/motion.js. */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
