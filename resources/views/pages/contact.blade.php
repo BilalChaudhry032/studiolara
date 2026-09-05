@@ -19,34 +19,50 @@
     {{-- FORM + CALENDLY PANEL --}}
     <section class="border-t border-ink-800 py-24">
         <x-container class="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-            {{-- Real contact form — wired to Mail + DB storage + spam protection in Phase 5 --}}
+            {{-- Real contact form — wired to Mail + DB storage + spam protection --}}
             <x-card class="lg:p-10">
                 <p class="text-heading-lg font-semibold text-paper">Send Us a Message</p>
                 <p class="mt-2 text-body-sm text-paper-dim">
                     Use the form below to tell us more about your project. We'll get back to you within 24 hours.
                 </p>
 
-                <form method="POST" action="{{ route('contact') }}" class="mt-8 space-y-6">
+                @if (session('status'))
+                    <p class="mt-6 rounded-lg border border-lime-500 bg-lime-500/10 px-4 py-3 text-body-sm text-lime-500">
+                        {{ session('status') }}
+                    </p>
+                @endif
+
+                @if ($errors->any())
+                    <div class="mt-6 rounded-lg border border-red-500 bg-red-500/10 px-4 py-3 text-body-sm text-red-400">
+                        <ul class="list-inside list-disc space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('contact.store') }}" class="mt-8 space-y-6">
                     @csrf
-                    {{-- Honeypot field, wired in Phase 5 --}}
+                    {{-- Honeypot: hidden from real visitors via CSS; any bot that fills every visible field tends to fill this too --}}
                     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
 
                     <div class="grid gap-6 sm:grid-cols-2">
                         <div>
                             <label for="name" class="text-body-sm text-paper-dim">Name</label>
-                            <input type="text" id="name" name="name" required
+                            <input type="text" id="name" name="name" value="{{ old('name') }}" required
                                 class="mt-2 w-full rounded-lg border border-ink-700 bg-ink-950 px-4 py-3 text-body-md text-paper focus-visible:border-lime-500">
                         </div>
                         <div>
                             <label for="email" class="text-body-sm text-paper-dim">Email</label>
-                            <input type="email" id="email" name="email" required
+                            <input type="email" id="email" name="email" value="{{ old('email') }}" required
                                 class="mt-2 w-full rounded-lg border border-ink-700 bg-ink-950 px-4 py-3 text-body-md text-paper focus-visible:border-lime-500">
                         </div>
                     </div>
 
                     <div>
                         <label for="company" class="text-body-sm text-paper-dim">Company / Project Name</label>
-                        <input type="text" id="company" name="company"
+                        <input type="text" id="company" name="company" value="{{ old('company') }}"
                             class="mt-2 w-full rounded-lg border border-ink-700 bg-ink-950 px-4 py-3 text-body-md text-paper focus-visible:border-lime-500">
                     </div>
 
@@ -87,10 +103,10 @@
                         <label for="description" class="text-body-sm text-paper-dim">Project Description</label>
                         <textarea id="description" name="description" rows="4" required
                             class="mt-2 w-full rounded-lg border border-ink-700 bg-ink-950 px-4 py-3 text-body-md text-paper focus-visible:border-lime-500"
-                            placeholder="Tell us about your idea"></textarea>
+                            placeholder="Tell us about your idea">{{ old('description') }}</textarea>
                     </div>
 
-                    <x-button class="w-full">Send Message</x-button>
+                    <x-button type="submit" class="w-full">Send Message</x-button>
                     <p class="text-center text-body-sm text-muted">We respect your privacy. Your information is secure.</p>
                 </form>
             </x-card>

@@ -45,7 +45,10 @@
     <section class="border-t border-ink-800 py-24">
         <x-container class="mx-auto max-w-xl text-center">
             <h2 class="text-heading-lg font-semibold text-paper">Get Insights Delivered to Your Inbox</h2>
-            <form method="POST" action="#" class="mt-6 flex flex-col gap-3 sm:flex-row">
+            @if (session('status'))
+                <p class="mt-4 text-body-sm text-lime-500">{{ session('status') }}</p>
+            @endif
+            <form method="POST" action="{{ route('newsletter.store') }}" class="mt-6 flex flex-col gap-3 sm:flex-row">
                 @csrf
                 <input
                     type="email"
@@ -54,7 +57,7 @@
                     placeholder="you@company.com"
                     class="w-full rounded-lg border border-ink-700 bg-ink-950 px-4 py-3 text-body-md text-paper focus-visible:border-lime-500"
                 >
-                <x-button class="shrink-0">Subscribe</x-button>
+                <x-button type="submit" class="shrink-0">Subscribe</x-button>
             </form>
         </x-container>
     </section>
