@@ -287,9 +287,29 @@ Confirmed solid regardless of environment noise: **Accessibility 95** and **Best
 - [x] Form validation + spam protection test — already thoroughly verified live in Phase 5 (real curl requests with actual CSRF tokens: valid submission creates a DB row + sends an email, honeypot silently drops spam with no row/email, rate limiting genuinely 429s past 5/minute). Not re-tested here since nothing changed since then; referencing that work rather than duplicating it.
 
 ### Phase 8 — Deployment
-- [ ] Hosting decided (Forge/VPS/other)
-- [ ] Queue worker for mail
-- [ ] SSL, backups, monitoring
+- [ ] **Hosting decided (Forge/VPS/other) — blocked on the user.** This requires an actual account, a real domain, and credentials I don't have and can't obtain on my own — genuinely not something to guess at or fabricate. See "Deployment readiness" below for what's prepared and waiting, and the open questions that need an answer before this can move.
+- [ ] Queue worker for mail — deliberately **not** switched from `Mail::send()` to `Mail::queue()` yet (see Phase 5's note): queuing mail with no confirmed worker running would make contact-form emails silently vanish, which is worse than the current synchronous send. Flip this once a host + worker setup is confirmed.
+- [ ] SSL, backups, monitoring — depends entirely on which host is chosen (Forge/most managed hosts issue Let's Encrypt SSL automatically; backups/monitoring options vary by provider).
+
+**Deployment readiness — prepared now, doesn't need the hosting decision first:**
+- **Pre-launch content checklist** (things that are placeholders and must be replaced before this is a real, launchable site):
+  - Calendly URL on the Contact page is a placeholder (`calendly.com/your-agency/strategy-call`) — needs the real link.
+  - `ADMIN_EMAIL` in `.env` is set to `egsolution99@gmail.com` for this dev session — confirm that's the right address to receive real contact-form leads before launch.
+  - Team roster (6 members on `/team`), the 3 case studies, and client logos are all structural placeholders — real content needed (see Phase 2/3 notes).
+  - `MAIL_MAILER=log` needs real SMTP credentials (or a transactional provider like Postmark/SES/Mailgun) before contact-form emails actually deliver anywhere.
+- **Production build steps** (standard Laravel deploy hygiene, to run on the actual server, not locally):
+  - `composer install --no-dev --optimize-autoloader` — note we run local dev with `optimize-autoloader: false` in `composer.json` because of this machine's specific Defender-scanning slowdown (S3 notes); that's a local-only workaround. **Re-enable it for the production build** (either flip the config value before deploying, or override via the `--optimize-autoloader` CLI flag, which takes precedence).
+  - `php artisan config:cache`, `route:cache`, `view:cache` for production performance.
+  - `npm run build` for production frontend assets (not `npm run dev`).
+  - `php artisan migrate --force` (the `--force` flag is required to run migrations in a non-local environment).
+  - Switch `.env`: `APP_ENV=production`, `APP_DEBUG=false`, real `APP_URL` (the sitemap/canonical/OG tags all derive from this — they're already environment-aware, no code changes needed once this is set correctly).
+  - Re-run the Lighthouse audit once live — the local scores in Phase 6 were confirmed unreliable (slow dev server skewing Performance, timing out the robots.txt SEO check) and shouldn't be taken as final.
+
+**Open questions for the user, needed to actually deploy:**
+1. Which hosting approach: Laravel Forge + a VPS (DigitalOcean/Hetzner/etc.), a different managed PHP host, or something else you already have?
+2. What's the real domain name?
+3. What SMTP/transactional email provider should send real mail (Postmark, SES, Mailgun, something else)?
+4. Should the local SQLite database carry over, or should production use MySQL/Postgres from the start? (Either works — Eloquent abstracts this — but worth deciding once, not mid-launch.)
 
 ---
 
@@ -301,6 +321,8 @@ Confirmed solid regardless of environment noise: **Accessibility 95** and **Best
 
 ## 7. Log
 Add a dated line each session.
+
+- `2026-09-05` — **Phase 8 blocked on the user, as expected** — hosting, a real domain, SMTP credentials, and where to deploy aren't decisions I can make or fabricate. Documented a full deployment-readiness checklist instead: standard production build steps (re-enable `optimize-autoloader` for the build, `--force` migrations, `config`/`route`/`view` caching, production `.env` switches), a pre-launch content checklist (placeholder Calendly URL, admin email, team roster, case studies all need real content before this is launch-ready), and the queue-worker-for-mail decision explicitly deferred until a worker is confirmed running (queuing mail now, with no worker, would make contact-form emails silently vanish — worse than the current synchronous send). Asked the user 4 concrete questions needed to move forward: hosting approach, domain, email provider, and database choice for production. **This closes out everything gated on Phases 0-7's own work** — all of Phases 0 through 7 are now fully built, verified live (not just code review) across pages/admin/forms/animations/SEO/cross-browser/responsive/reduced-motion, committed, and pushed to `github.com/BilalChaudhry032/studiolara`.
 
 - `2026-09-05` — **Phase 7 complete.** Pure verification phase, no source changes needed — everything already worked correctly when actually tested. Installed Firefox + WebKit for Playwright (deferred from Phase 1 for this exact purpose) and confirmed Home renders identically and error-free across Chromium/Firefox/WebKit. Emulated `prefers-reduced-motion: reduce` for the first time this project (Phase 4 had only verified it by code review) and confirmed all three motion systems genuinely comply. Ran a real responsive pass at 375/768/1024/1440 and, in the process, found and correctly diagnosed a QA-tool false alarm: full-page screenshots on any scroll-reveal page show blank gaps because `--full` capture doesn't actually scroll (so `ScrollTrigger` never fires) — confirmed it wasn't a real bug via direct `is-revealed` class counts before/after a genuine scroll, and documented the gotcha in `run.mjs` so it doesn't cause a false alarm again. Form/spam testing wasn't repeated — Phase 5 already covered it live and nothing's changed since.
 
