@@ -306,10 +306,12 @@ Confirmed solid regardless of environment noise: **Accessibility 95** and **Best
   - Re-run the Lighthouse audit once live — the local scores in Phase 6 were confirmed unreliable (slow dev server skewing Performance, timing out the robots.txt SEO check) and shouldn't be taken as final.
 
 **Open questions for the user, needed to actually deploy:**
-1. Which hosting approach: Laravel Forge + a VPS (DigitalOcean/Hetzner/etc.), a different managed PHP host, or something else you already have?
-2. What's the real domain name?
-3. What SMTP/transactional email provider should send real mail (Postmark, SES, Mailgun, something else)?
-4. Should the local SQLite database carry over, or should production use MySQL/Postgres from the start? (Either works — Eloquent abstracts this — but worth deciding once, not mid-launch.)
+1. Which hosting approach: Laravel Forge + a VPS (DigitalOcean/Hetzner/etc.), a different managed PHP host, or something else you already have? — **answered: not decided yet.**
+2. What's the real domain name? — **still needed.**
+3. What SMTP/transactional email provider should send real mail (Postmark, SES, Mailgun, something else)? — **answered: not decided yet.**
+4. Should the local SQLite database carry over, or should production use MySQL/Postgres from the start? — **answered: MySQL or Postgres.**
+
+**MySQL compatibility verified 2026-09-05** (proactively, since the user confirmed the production DB choice and XAMPP's MariaDB was right here to test against): started XAMPP's MySQL/MariaDB service, created a `studio` database, and ran the full migration set + all 7 seeders against it via inline env var overrides (`DB_CONNECTION=mysql ... php artisan migrate/db:seed`) — **without touching the real `.env`**, so local dev is still on SQLite exactly as decided in Phase 0. Everything worked identically to SQLite: all migrations (including the JSON columns and the `blog_posts` → `blog_categories` foreign key) succeeded, all seeders ran clean, and every page that reads JSON-cast array data or uses slug route-model-binding (`/services`, `/pricing`, `/work`, a case study detail page, `/blog`) returned 200 with zero SQL errors. **Conclusion: the production DB switch to MySQL/Postgres will be a pure `.env` change plus a migration re-run — no code changes needed.** XAMPP's MariaDB service is left **running** (it was off before this test) with the populated `studio` database still in it, in case it's useful to browse via phpMyAdmin — stop it from the XAMPP control panel if not needed; nothing about local dev's own `.env`/SQLite setup was changed.
 
 ---
 
@@ -321,6 +323,8 @@ Confirmed solid regardless of environment noise: **Accessibility 95** and **Best
 
 ## 7. Log
 Add a dated line each session.
+
+- `2026-09-05` — User answered the Phase 8 deployment questions: hosting and email provider still **not decided yet** (fine — doesn't block anything else), but production database confirmed as **MySQL or Postgres**. Since XAMPP's MariaDB was available locally, proactively verified full compatibility now rather than waiting for an actual deploy to find out: started the service, created a `studio` database, ran every migration and all 7 seeders against it via inline env overrides (never touched the real `.env` — local dev is still SQLite exactly as Phase 0 decided), then booted the app against it and confirmed every JSON-column-reading and slug-route-bound page still returns clean 200s. No MySQL-specific issues found — the eventual production DB switch will be a `.env` change plus a migration re-run, nothing more. MariaDB left running (was off before) with the test data in it in case it's useful to inspect via phpMyAdmin.
 
 - `2026-09-05` — **Phase 8 blocked on the user, as expected** — hosting, a real domain, SMTP credentials, and where to deploy aren't decisions I can make or fabricate. Documented a full deployment-readiness checklist instead: standard production build steps (re-enable `optimize-autoloader` for the build, `--force` migrations, `config`/`route`/`view` caching, production `.env` switches), a pre-launch content checklist (placeholder Calendly URL, admin email, team roster, case studies all need real content before this is launch-ready), and the queue-worker-for-mail decision explicitly deferred until a worker is confirmed running (queuing mail now, with no worker, would make contact-form emails silently vanish — worse than the current synchronous send). Asked the user 4 concrete questions needed to move forward: hosting approach, domain, email provider, and database choice for production. **This closes out everything gated on Phases 0-7's own work** — all of Phases 0 through 7 are now fully built, verified live (not just code review) across pages/admin/forms/animations/SEO/cross-browser/responsive/reduced-motion, committed, and pushed to `github.com/BilalChaudhry032/studiolara`.
 
