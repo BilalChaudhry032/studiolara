@@ -8,7 +8,7 @@
     $alignClasses = $align === 'center' ? 'mx-auto text-center' : '';
 @endphp
 
-<div {{ $attributes->merge(['class' => "max-w-3xl {$alignClasses}"]) }}>
+<div data-reveal {{ $attributes->merge(['class' => "max-w-3xl {$alignClasses}"]) }}>
     @if ($eyebrow)
         <p class="mb-4 text-eyebrow uppercase tracking-widest text-lime-500">{{ $eyebrow }}</p>
     @endif

@@ -23,11 +23,11 @@
 
     {{-- SERVICE TAG STRIP (static row for now — becomes a marquee divider in Phase 4) --}}
     <section class="border-y border-ink-800 py-6">
-        <x-container class="flex flex-wrap justify-center gap-3">
+        <x-marquee speed="22">
             @foreach ($tagStrip as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
-        </x-container>
+        </x-marquee>
     </section>
 
     {{-- DETAILED SERVICE CARDS --}}
@@ -71,11 +71,11 @@
 
     {{-- SERVICE TAG STRIP (repeated as section divider) --}}
     <section class="border-y border-ink-800 py-6">
-        <x-container class="flex flex-wrap justify-center gap-3">
+        <x-marquee speed="22">
             @foreach ($tagStrip as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
-        </x-container>
+        </x-marquee>
     </section>
 
     {{-- PROCESS --}}
@@ -93,7 +93,7 @@
                     ['step' => '04', 'name' => 'Build', 'blurb' => 'A polished, final experience — fast, scalable, and ready to perform.'],
                     ['step' => '05', 'name' => 'Refine', 'blurb' => 'We refine based on real feedback and performance data after launch.'],
                 ] as $step)
-                    <div>
+                    <div data-reveal>
                         <p class="text-eyebrow text-lime-500">{{ $step['step'] }}</p>
                         <p class="mt-3 text-heading-md font-semibold text-paper">{{ $step['name'] }}</p>
                         <p class="mt-2 text-body-sm text-paper-dim">{{ $step['blurb'] }}</p>
@@ -128,29 +128,20 @@
             </div>
 
             <div class="grid grid-cols-3 gap-6 rounded-2xl border border-ink-700 bg-ink-900 p-8 text-center">
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">150+</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Projects Delivered</p>
-                </div>
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">8+</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Years in Business</p>
-                </div>
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">40%</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Avg. Conversion Lift</p>
-                </div>
+                <x-stat-counter :target="150" suffix="+" label="Projects Delivered" />
+                <x-stat-counter :target="8" suffix="+" label="Years in Business" />
+                <x-stat-counter :target="40" suffix="%" label="Avg. Conversion Lift" />
             </div>
         </x-container>
     </section>
 
     {{-- SERVICE TAG STRIP (again) --}}
     <section class="border-y border-ink-800 py-6">
-        <x-container class="flex flex-wrap justify-center gap-3">
+        <x-marquee speed="22">
             @foreach ($tagStrip as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
-        </x-container>
+        </x-marquee>
     </section>
 
     {{-- PORTFOLIO TEASER --}}

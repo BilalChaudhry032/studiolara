@@ -66,7 +66,7 @@
                     ['q' => 'Can I move between plans mid-project?', 'a' => 'Yes — scope can evolve as we learn more together. We\'ll re-scope and adjust timeline/investment transparently if requirements grow beyond the original plan.'],
                     ['q' => 'Is ongoing support included?', 'a' => 'Starter includes 30 days post-launch support, Growth includes 60 days plus bug fixes, and Scale includes ongoing support and maintenance with a dedicated account manager.'],
                 ] as $index => $faq)
-                    <div class="py-6">
+                    <div class="py-6" data-reveal>
                         <button
                             type="button"
                             @click="open = open === {{ $index }} ? null : {{ $index }}"

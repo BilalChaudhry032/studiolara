@@ -32,23 +32,21 @@
             </div>
 
             <div class="mx-auto mt-16 max-w-3xl">
-                <x-placeholder-image label="Product showcase reel (video in Phase 4)" ratio="aspect-video" />
+                <x-hero-video label="Product showcase reel" />
             </div>
         </x-container>
     </section>
 
-    {{-- CLIENT LOGOS (static grid for now — becomes a marquee in Phase 4) --}}
+    {{-- CLIENT LOGOS MARQUEE --}}
     <section class="border-y border-ink-800 py-12">
-        <x-container>
-            <p class="text-center text-body-sm uppercase tracking-widest text-muted">
-                Trusted by founders across the US &amp; EU
-            </p>
-            <div class="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
-                @for ($i = 1; $i <= 6; $i++)
-                    <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" />
-                @endfor
-            </div>
-        </x-container>
+        <p class="text-center text-body-sm uppercase tracking-widest text-muted">
+            Trusted by founders across the US &amp; EU
+        </p>
+        <x-marquee speed="28" class="mt-8">
+            @for ($i = 1; $i <= 6; $i++)
+                <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" class="w-48" />
+            @endfor
+        </x-marquee>
     </section>
 
     {{-- VALUE PROPOSITION / BENEFIT CARDS --}}
@@ -124,7 +122,7 @@
                     ['step' => '04', 'name' => 'Build', 'blurb' => 'Build with scalability, performance, and stability at the core.'],
                     ['step' => '05', 'name' => 'Refine', 'blurb' => 'Refine based on real feedback and performance data.'],
                 ] as $step)
-                    <div>
+                    <div data-reveal>
                         <p class="text-eyebrow text-lime-500">{{ $step['step'] }}</p>
                         <p class="mt-3 text-heading-md font-semibold text-paper">{{ $step['name'] }}</p>
                         <p class="mt-2 text-body-sm text-paper-dim">{{ $step['blurb'] }}</p>
@@ -157,19 +155,9 @@
             </div>
 
             <div class="grid grid-cols-3 gap-6 rounded-2xl border border-ink-700 bg-ink-900 p-8 text-center">
-                {{-- Static numbers for now; Phase 4 swaps these for the odometer-style counter component --}}
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">150+</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Projects Delivered</p>
-                </div>
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">8+</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Years in Business</p>
-                </div>
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">40%</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Avg. Conversion Lift</p>
-                </div>
+                <x-stat-counter :target="150" suffix="+" label="Projects Delivered" />
+                <x-stat-counter :target="8" suffix="+" label="Years in Business" />
+                <x-stat-counter :target="40" suffix="%" label="Avg. Conversion Lift" />
             </div>
         </x-container>
     </section>
@@ -221,8 +209,17 @@
         </section>
     @endif
 
+    {{-- SERVICE TAG STRIP (confirmed tapline pattern: marquee directly above the footer CTA) --}}
+    <section class="border-t border-ink-800 py-6">
+        <x-marquee speed="22">
+            @foreach ($services->pluck('title') as $tag)
+                <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
+            @endforeach
+        </x-marquee>
+    </section>
+
     {{-- FOOTER CTA --}}
-    <section class="border-t border-ink-800 py-24">
+    <section class="py-24">
         <x-container class="mx-auto max-w-2xl text-center">
             <h2 class="text-display-md font-semibold text-paper">Let's Build Something Great Together</h2>
             <p class="mt-4 text-body-lg text-paper-dim">

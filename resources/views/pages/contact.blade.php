@@ -143,7 +143,7 @@
                     ['step' => '03', 'name' => 'Proposal & Agreement', 'blurb' => 'Review our detailed proposal, refine any aspects, and finalize the agreement (usually 1 week).'],
                     ['step' => '04', 'name' => 'Kick-off & Execution', 'blurb' => 'We kick off the project, maintaining regular communication and transparency throughout.'],
                 ] as $step)
-                    <div>
+                    <div data-reveal>
                         <p class="text-eyebrow text-lime-500">{{ $step['step'] }}</p>
                         <p class="mt-3 text-heading-md font-semibold text-paper">{{ $step['name'] }}</p>
                         <p class="mt-2 text-body-sm text-paper-dim">{{ $step['blurb'] }}</p>
@@ -155,10 +155,10 @@
 
     {{-- SERVICE TAG STRIP --}}
     <section class="border-y border-ink-800 py-6">
-        <x-container class="flex flex-wrap justify-center gap-3">
+        <x-marquee speed="22">
             @foreach (['UI/UX Design', 'Web Development', 'SaaS Product Development', 'Mobile App Design & Dev', 'CMS Development'] as $tag)
                 <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
             @endforeach
-        </x-container>
+        </x-marquee>
     </section>
 </x-layout>

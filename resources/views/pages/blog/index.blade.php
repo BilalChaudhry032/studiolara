@@ -16,11 +16,11 @@
 
     @if ($categories->isNotEmpty())
         <section class="border-y border-ink-800 py-6">
-            <x-container class="flex flex-wrap justify-center gap-3">
+            <x-marquee speed="22">
                 @foreach ($categories as $category)
                     <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $category->name }}</span>
                 @endforeach
-            </x-container>
+            </x-marquee>
         </section>
     @endif
 

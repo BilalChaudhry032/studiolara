@@ -21,15 +21,13 @@
         </x-container>
     </section>
 
-    {{-- CLIENT LOGOS (static grid for now — becomes a marquee in Phase 4) --}}
+    {{-- CLIENT LOGOS MARQUEE --}}
     <section class="border-y border-ink-800 py-12">
-        <x-container>
-            <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
-                @for ($i = 1; $i <= 6; $i++)
-                    <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" />
-                @endfor
-            </div>
-        </x-container>
+        <x-marquee speed="28">
+            @for ($i = 1; $i <= 6; $i++)
+                <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" class="w-48" />
+            @endfor
+        </x-marquee>
     </section>
 
     {{-- NARRATIVE + TRAIT CALLOUTS --}}
@@ -104,19 +102,9 @@
             </x-section-heading>
 
             <div class="mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-6">
-                {{-- Static numbers for now; Phase 4 swaps these for the odometer-style counter component --}}
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">150+</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Projects Delivered</p>
-                </div>
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">8+</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Years in Business</p>
-                </div>
-                <div>
-                    <p class="text-display-md font-semibold text-lime-500">40%</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Avg. Conversion Lift</p>
-                </div>
+                <x-stat-counter :target="150" suffix="+" label="Projects Delivered" />
+                <x-stat-counter :target="8" suffix="+" label="Years in Business" />
+                <x-stat-counter :target="40" suffix="%" label="Avg. Conversion Lift" />
             </div>
 
             <div class="mt-10">
@@ -156,7 +144,7 @@
                     ['q' => 'How long does a typical project take?', 'a' => 'A Starter MVP typically takes 3–8 weeks. A full Growth-tier product build runs 3–6 months. Scale-tier enterprise engagements run 6–12+ months depending on scope.'],
                     ['q' => 'Can I edit the website myself after launch?', 'a' => 'Yes — content (case studies, services, team, blog, pricing) is managed through an admin panel, so you can update copy and media without touching code.'],
                 ] as $index => $faq)
-                    <div class="py-6">
+                    <div class="py-6" data-reveal>
                         <button
                             type="button"
                             @click="open = open === {{ $index }} ? null : {{ $index }}"
