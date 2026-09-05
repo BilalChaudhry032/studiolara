@@ -36,6 +36,7 @@
                                 <img
                                     src="{{ $post->getFirstMediaUrl('cover') }}"
                                     alt="{{ $post->title }}"
+                                    loading="lazy"
                                     class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover"
                                 >
                             @else

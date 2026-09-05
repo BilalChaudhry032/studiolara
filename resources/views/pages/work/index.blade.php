@@ -37,6 +37,7 @@
                                 <img
                                     src="{{ $project->getFirstMediaUrl('cover') }}"
                                     alt="{{ $project->title }}"
+                                    loading="lazy"
                                     class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                                 >
                             @else

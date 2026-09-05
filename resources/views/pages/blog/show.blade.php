@@ -1,4 +1,31 @@
-<x-layout :title="$post->title" :description="$post->excerpt">
+<x-layout
+    :title="$post->title"
+    :description="$post->excerpt"
+    :image="$post->getFirstMediaUrl('cover') ?: null"
+    type="article"
+>
+    <x-slot:head>
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'Article',
+                'headline' => $post->title,
+                'description' => $post->excerpt,
+                'datePublished' => $post->published_at?->toIso8601String(),
+                'dateModified' => $post->updated_at->toIso8601String(),
+                'author' => [
+                    '@type' => 'Person',
+                    'name' => $post->author,
+                ],
+                'publisher' => [
+                    '@type' => 'Organization',
+                    'name' => config('app.name'),
+                ],
+                'mainEntityOfPage' => url()->current(),
+            ], JSON_UNESCAPED_SLASHES) !!}
+        </script>
+    </x-slot:head>
+
     <section class="py-16 lg:py-24">
         <x-container class="mx-auto max-w-3xl">
             <p class="text-eyebrow uppercase tracking-widest text-lime-500">{{ $post->category?->name ?? 'Insights' }}</p>

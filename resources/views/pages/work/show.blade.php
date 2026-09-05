@@ -1,4 +1,8 @@
-<x-layout :title="$project->title" :description="str($project->about)->limit(155)">
+<x-layout
+    :title="$project->title"
+    :description="str($project->about)->limit(155)"
+    :image="$project->getFirstMediaUrl('cover') ?: null"
+>
     {{-- 1. Hero image --}}
     <section class="pt-12">
         <x-container>
@@ -67,7 +71,7 @@
         <section class="border-t border-ink-800 py-16">
             <x-container class="grid gap-6 sm:grid-cols-2">
                 @foreach ($project->getMedia('gallery') as $media)
-                    <img src="{{ $media->getUrl() }}" alt="" class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover">
+                    <img src="{{ $media->getUrl() }}" alt="" loading="lazy" class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover">
                 @endforeach
             </x-container>
         </section>
