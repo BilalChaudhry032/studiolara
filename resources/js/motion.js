@@ -111,4 +111,38 @@ export function registerAlpineMotionComponents(Alpine) {
             });
         },
     }));
+
+    /**
+     * Mouse-tracking 3D tilt, confirmed live on tapline.studio's value-prop
+     * card row (rotateX/rotateY driven by cursor position inside the card,
+     * springing back to 0 on mouseleave - a continuous "mouse move" trigger,
+     * not a discrete hover state). Skipped under prefers-reduced-motion and
+     * on coarse/touch pointers, where there's no cursor to track.
+     */
+    Alpine.data('tiltCard', (maxTilt = 8) => ({
+        active: !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches,
+        quickX: null,
+        quickY: null,
+
+        init() {
+            if (!this.active) return;
+            this.quickX = gsap.quickTo(this.$el, 'rotationY', { duration: 0.4, ease: 'power3.out' });
+            this.quickY = gsap.quickTo(this.$el, 'rotationX', { duration: 0.4, ease: 'power3.out' });
+        },
+
+        onMove(event) {
+            if (!this.active) return;
+            const rect = this.$el.getBoundingClientRect();
+            const px = (event.clientX - rect.left) / rect.width - 0.5;
+            const py = (event.clientY - rect.top) / rect.height - 0.5;
+            this.quickX(px * maxTilt * 2);
+            this.quickY(py * -maxTilt * 2);
+        },
+
+        onLeave() {
+            if (!this.active) return;
+            this.quickX(0);
+            this.quickY(0);
+        },
+    }));
 }

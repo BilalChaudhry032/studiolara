@@ -23,6 +23,19 @@
         display: none !important;
     }
 
+    /* Ambient background glow behind every section (see .bg-glow-section
+       below in this file), applied globally rather than per-page so the
+       whole site picks it up automatically, current and future sections
+       alike. `z-index: 0` (not just `position: relative`) is required, not
+       decorative - it makes the section its own stacking context so the
+       glow's `z-index: -1` is contained behind THIS section's content
+       without bleeding behind a different section in the page. */
+    section {
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+    }
+
     /* Hard requirement, not optional polish: every animation utility in this
        project must check this before running. See resources/js/motion.js. */
     @media (prefers-reduced-motion: reduce) {
@@ -45,6 +58,106 @@
 @keyframes marquee-right {
     from { transform: translateX(-50%); }
     to { transform: translateX(0); }
+}
+
+/* Ambient floating dots (confirmed live on tapline.studio's footer CTA - 7
+   small particles continuously bobbing via a JS loop, independent of hover
+   or scroll). Pure CSS here since there's nothing to trigger: the global
+   prefers-reduced-motion override above already neutralizes this. */
+@keyframes float-dot {
+    0%, 100% { transform: translateY(-6px); }
+    50% { transform: translateY(6px); }
+}
+
+.float-dot {
+    animation: float-dot 3.2s ease-in-out infinite;
+}
+
+/* Ambient section-background glow, inspired by the soft blurred color blobs
+   confirmed live behind tapline.studio's sections - reimplemented with our
+   own multi-color mix (lime/blue/violet, not their purple/orange) since the
+   brand is meant to be distinct, not a copy. Pure CSS pseudo-elements on
+   every <section> (see the base `section` rule above) so it applies
+   site-wide with zero per-page markup. Each blob is itself a two-color
+   gradient (not a flat tint), and the pairing cycles every 3 sections via
+   :nth-of-type so a long page shows real color variety instead of repeating
+   the same lime wash down the whole scroll. */
+section::before,
+section::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 34rem;
+    height: 34rem;
+    border-radius: 9999px;
+    filter: blur(120px);
+    pointer-events: none;
+}
+
+section::before {
+    top: -11rem;
+    left: -11rem;
+    background: radial-gradient(circle, rgba(215, 255, 63, 0.16) 0%, rgba(77, 163, 255, 0.08) 55%, transparent 78%);
+    animation: glow-drift-a 18s ease-in-out infinite;
+}
+
+section::after {
+    bottom: -11rem;
+    right: -11rem;
+    background: radial-gradient(circle, rgba(177, 92, 255, 0.14) 0%, rgba(215, 255, 63, 0.06) 55%, transparent 78%);
+    animation: glow-drift-b 22s ease-in-out infinite;
+}
+
+section:nth-of-type(3n+1)::before {
+    left: auto;
+    right: -11rem;
+}
+
+section:nth-of-type(3n+1)::after {
+    right: auto;
+    left: -11rem;
+}
+
+section:nth-of-type(3n+2)::before {
+    background: radial-gradient(circle, rgba(77, 163, 255, 0.16) 0%, rgba(177, 92, 255, 0.08) 55%, transparent 78%);
+}
+
+section:nth-of-type(3n+2)::after {
+    background: radial-gradient(circle, rgba(215, 255, 63, 0.13) 0%, rgba(77, 163, 255, 0.06) 55%, transparent 78%);
+}
+
+section:nth-of-type(3n)::before {
+    background: radial-gradient(circle, rgba(177, 92, 255, 0.15) 0%, rgba(215, 255, 63, 0.07) 55%, transparent 78%);
+}
+
+section:nth-of-type(3n)::after {
+    background: radial-gradient(circle, rgba(77, 163, 255, 0.13) 0%, rgba(177, 92, 255, 0.06) 55%, transparent 78%);
+}
+
+@keyframes glow-drift-a {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(3rem, -2.5rem); }
+}
+
+@keyframes glow-drift-b {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-3rem, 2.5rem); }
+}
+
+/* Continuously-moving element, distinct from the blobs' slow back-and-forth
+   drift above: a faint dot-field texture that scrolls in one direction on
+   an infinite loop (one tile's worth per cycle, so it repeats seamlessly).
+   Kept very low-opacity - it's a texture, not the focal decoration - so it
+   doesn't fight for attention on text-dense sections like pricing or FAQs. */
+section {
+    background-image: radial-gradient(rgba(245, 245, 240, 0.05) 1px, transparent 1.5px);
+    background-size: 46px 46px;
+    animation: dot-field-drift 50s linear infinite;
+}
+
+@keyframes dot-field-drift {
+    from { background-position: 0 0; }
+    to { background-position: 46px 46px; }
 }
 
 /* Scroll-reveal starting state — see resources/js/motion.js. Applied via

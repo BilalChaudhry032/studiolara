@@ -69,7 +69,14 @@
 <body class="flex min-h-screen flex-col bg-ink-950 text-paper">
     <x-nav />
 
-    <main class="flex-1">
+    {{--
+        `perspective` scoped to <main>, not <body>: like backdrop-filter,
+        perspective != none makes its element a containing block for
+        `position: fixed` descendants - and x-nav's mobile overlay is fixed.
+        Keeping it on <main> (a sibling of x-nav) gives every card its tilt
+        without touching nav's fixed positioning.
+    --}}
+    <main class="flex-1 [perspective:1200px]">
         {{ $slot }}
     </main>
 

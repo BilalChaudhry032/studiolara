@@ -1,0 +1,14 @@
+.git
+.gitignore
+node_modules
+vendor
+.env
+.env.example
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+database/database.sqlite
+tests
+PROJECT_PLAN_AND_PROGRESS.md
+README.md

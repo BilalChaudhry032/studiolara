@@ -220,8 +220,16 @@
     </section>
 
     {{-- FOOTER CTA --}}
-    <section class="py-24">
-        <x-container class="mx-auto max-w-2xl text-center">
+    <section class="relative overflow-hidden py-24">
+        {{-- Ambient floating dots, confirmed live on tapline.studio's equivalent CTA section (see app.css .float-dot) --}}
+        <span class="float-dot absolute left-[12%] top-[20%] h-1.5 w-1.5 rounded-full bg-lime-500/70" style="animation-delay:0s"></span>
+        <span class="float-dot absolute left-[20%] top-[65%] h-1.5 w-1.5 rounded-full bg-lime-500/50" style="animation-delay:0.6s"></span>
+        <span class="float-dot absolute left-[8%] top-[45%] h-1 w-1 rounded-full bg-paper/40" style="animation-delay:1.1s"></span>
+        <span class="float-dot absolute right-[10%] top-[25%] h-1.5 w-1.5 rounded-full bg-paper/40" style="animation-delay:0.3s"></span>
+        <span class="float-dot absolute right-[18%] top-[60%] h-1 w-1 rounded-full bg-lime-500/60" style="animation-delay:0.9s"></span>
+        <span class="float-dot absolute right-[7%] top-[42%] h-1.5 w-1.5 rounded-full bg-lime-500/40" style="animation-delay:1.4s"></span>
+
+        <x-container class="relative mx-auto max-w-2xl text-center">
             <h2 class="text-display-md font-semibold text-paper">Let's Build Something Great Together</h2>
             <p class="mt-4 text-body-lg text-paper-dim">
                 Ready to turn your idea into a digital product? We're here to listen, strategize, and bring your vision to life.
