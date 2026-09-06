@@ -21,6 +21,8 @@ if [ "$SEEDED" = "0" ]; then
     php artisan db:seed --force
 fi
 
+php artisan db:seed --class=AdminUserSeeder --force
+
 php artisan storage:link || true
 php artisan config:cache
 php artisan route:cache
