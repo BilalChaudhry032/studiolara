@@ -11,7 +11,7 @@ RUN npm run build
 FROM php:8.3-cli-alpine
 
 RUN apk add --no-cache \
-    git curl bash sqlite pkgconf \
+    git curl bash sqlite sqlite-dev pkgconf \
     libpng-dev libzip-dev icu-dev oniguruma-dev freetype-dev libjpeg-turbo-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_sqlite mbstring zip exif pcntl bcmath gd intl
