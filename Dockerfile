@@ -11,10 +11,10 @@ RUN npm run build
 FROM php:8.3-cli-alpine
 
 RUN apk add --no-cache \
-    git curl bash sqlite \
-    libpng-dev libzip-dev icu-dev oniguruma-dev \
-    && docker-php-ext-install pdo pdo_sqlite mbstring zip exif pcntl bcmath gd intl \
-    && apk del --no-cache libpng-dev libzip-dev icu-dev oniguruma-dev
+    git curl bash sqlite pkgconf \
+    libpng-dev libzip-dev icu-dev oniguruma-dev freetype-dev libjpeg-turbo-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_sqlite mbstring zip exif pcntl bcmath gd intl
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
