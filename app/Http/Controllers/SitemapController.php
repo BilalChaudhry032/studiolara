@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
 use App\Models\CaseStudy;
+use App\Models\Service;
 use Illuminate\Support\Facades\Response;
 
 class SitemapController extends Controller
@@ -20,6 +21,14 @@ class SitemapController extends Controller
             ['loc' => route('blog.index'), 'priority' => '0.7'],
             ['loc' => route('contact'), 'priority' => '0.8'],
         ]);
+
+        $urls = $urls->merge(
+            Service::all()->map(fn (Service $service) => [
+                'loc' => route('services.show', $service),
+                'lastmod' => $service->updated_at->toAtomString(),
+                'priority' => '0.8',
+            ])
+        );
 
         $urls = $urls->merge(
             CaseStudy::all()->map(fn (CaseStudy $project) => [

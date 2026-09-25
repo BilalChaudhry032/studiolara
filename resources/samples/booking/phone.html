@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Juniper — booking (sample)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { width: 390px; height: 844px; margin: 0; overflow: hidden; }
+  .j { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .old { font: 15px Helvetica, Arial, sans-serif; }
+  .screen { position: absolute; inset: 0; transition: transform 450ms cubic-bezier(.16,1,.3,1), opacity 300ms; }
+  .hidden-right { transform: translateX(100%); }
+  .hidden-left { transform: translateX(-30%); opacity: 0; }
+  .old-bar { background: linear-gradient(#B3BCC6, #6D7C8C); color: #fff; text-shadow: 0 -1px 0 rgba(0,0,0,.4); }
+  .old-btn { background: linear-gradient(#FDFDFD, #D5DBE1); border: 1px solid #8C98A5; border-radius: 6px; }
+</style>
+</head>
+<body>
+<div id="root" class="relative h-full w-full"></div>
+
+<template id="after-1">
+  <div class="screen j bg-[#F6F1E7] text-[#132A22]">
+    <div class="px-6 pt-14">
+      <div class="flex items-center justify-between"><p class="text-[15px] font-semibold text-[#5C6F66]">Good morning, Maya</p><span class="grid h-10 w-10 place-items-center rounded-full bg-[#F4A582] text-[14px] font-bold">M</span></div>
+      <h1 class="mt-2 text-[30px] font-extrabold leading-tight tracking-tight">Find your next class</h1>
+      <div class="mt-5 flex justify-between text-center text-[13px] font-bold">
+        <div class="w-11 rounded-2xl py-2 text-[#5C6F66]">Mon<br><span class="text-[17px] text-[#132A22]">12</span></div>
+        <div class="w-11 rounded-2xl bg-[#163A2F] py-2 text-[#C9E4D6]">Tue<br><span class="text-[17px] text-white">13</span></div>
+        <div class="w-11 rounded-2xl py-2 text-[#5C6F66]">Wed<br><span class="text-[17px] text-[#132A22]">14</span></div>
+        <div class="w-11 rounded-2xl py-2 text-[#5C6F66]">Thu<br><span class="text-[17px] text-[#132A22]">15</span></div>
+        <div class="w-11 rounded-2xl py-2 text-[#5C6F66]">Fri<br><span class="text-[17px] text-[#132A22]">16</span></div>
+        <div class="w-11 rounded-2xl py-2 text-[#5C6F66]">Sat<br><span class="text-[17px] text-[#132A22]">17</span></div>
+      </div>
+    </div>
+    <div class="mt-6 space-y-3 px-6">
+      <div class="flex items-center gap-4 rounded-3xl bg-white p-4"><div class="grid h-16 w-16 place-items-center rounded-2xl bg-[#163A2F] text-[13px] font-bold leading-tight text-white">07:00<br><span class="font-medium text-[#C9E4D6]">60m</span></div><div class="flex-1"><p class="text-[17px] font-extrabold">Vinyasa Flow</p><p class="text-[13px] text-[#5C6F66]">with Ines · 4 spots left</p></div><button data-book class="rounded-full bg-[#F4A582] px-4 py-2 text-[14px] font-bold">Book</button></div>
+      <div class="flex items-center gap-4 rounded-3xl bg-white p-4"><div class="grid h-16 w-16 place-items-center rounded-2xl bg-[#E7EFE9] text-[13px] font-bold leading-tight">08:15<br><span class="font-medium text-[#5C6F66]">45m</span></div><div class="flex-1"><p class="text-[17px] font-extrabold">Pilates Core</p><p class="text-[13px] text-[#5C6F66]">with Dev · 9 spots left</p></div><button class="rounded-full bg-[#F6F1E7] px-4 py-2 text-[14px] font-bold">Book</button></div>
+      <div class="flex items-center gap-4 rounded-3xl bg-white p-4"><div class="grid h-16 w-16 place-items-center rounded-2xl bg-[#E7EFE9] text-[13px] font-bold leading-tight">12:30<br><span class="font-medium text-[#5C6F66]">30m</span></div><div class="flex-1"><p class="text-[17px] font-extrabold">Lunch Stretch</p><p class="text-[13px] text-[#5C6F66]">with Ines · 12 spots left</p></div><button class="rounded-full bg-[#F6F1E7] px-4 py-2 text-[14px] font-bold">Book</button></div>
+      <div class="flex items-center gap-4 rounded-3xl bg-white p-4 opacity-60"><div class="grid h-16 w-16 place-items-center rounded-2xl bg-[#E7EFE9] text-[13px] font-bold leading-tight">18:30<br><span class="font-medium text-[#5C6F66]">50m</span></div><div class="flex-1"><p class="text-[17px] font-extrabold">Sound Bath</p><p class="text-[13px] text-[#5C6F66]">Waitlist only</p></div><button class="rounded-full border-2 border-[#132A22]/20 px-4 py-2 text-[14px] font-bold">Join</button></div>
+    </div>
+    <nav class="absolute inset-x-4 bottom-6 flex justify-around rounded-full bg-[#163A2F] py-4 text-[12px] font-bold text-[#C9E4D6]"><span class="text-white">Classes</span><span>Bookings</span><span>Passes</span><span>Profile</span></nav>
+  </div>
+</template>
+
+<template id="after-2">
+  <div class="screen j bg-[#163A2F] text-white">
+    <div class="px-6 pt-14"><span class="text-[15px] font-semibold text-[#C9E4D6]">‹ Tuesday 13</span>
+      <h1 class="mt-4 text-[34px] font-extrabold leading-tight tracking-tight">Vinyasa Flow</h1>
+      <p class="mt-1 text-[15px] text-[#C9E4D6]">60 minutes · with Ines · Studio 2</p>
+    </div>
+    <div class="absolute inset-x-0 bottom-0 top-[210px] rounded-t-[32px] bg-[#F6F1E7] px-6 pt-7 text-[#132A22]">
+      <p class="text-[14px] font-bold">Pick a time</p>
+      <div class="mt-3 grid grid-cols-3 gap-2 text-[15px] font-bold">
+        <button data-time class="rounded-2xl border-2 border-[#163A2F] bg-white py-3">07:00</button>
+        <button class="rounded-2xl bg-white py-3">09:30</button>
+        <button class="rounded-2xl bg-white py-3 text-[#5C6F66] line-through">17:00</button>
+      </div>
+      <p class="mt-6 text-[14px] font-bold">Pay with</p>
+      <div class="mt-3 flex items-center gap-3 rounded-2xl bg-white p-4"><span class="grid h-10 w-10 place-items-center rounded-xl bg-[#F4A582] font-extrabold">10</span><div class="flex-1"><p class="text-[15px] font-bold">10-class pass</p><p class="text-[13px] text-[#5C6F66]">3 classes left · expires in June</p></div><span class="text-[20px] text-[#163A2F]">●</span></div>
+      <div class="mt-6 flex items-center gap-3 rounded-2xl bg-[#E7EFE9] p-4 text-[13px] font-semibold"><span class="text-[18px]">🧘</span>Mat and towel provided. Arrive 10 minutes early.</div>
+      <button data-confirm class="absolute inset-x-6 bottom-10 rounded-full bg-[#163A2F] py-4 text-[16px] font-bold text-white">Confirm booking</button>
+    </div>
+  </div>
+</template>
+
+<template id="after-3">
+  <div class="screen j flex flex-col items-center bg-[#F6F1E7] px-8 pt-24 text-center text-[#132A22]">
+    <span class="grid h-20 w-20 place-items-center rounded-full bg-[#F4A582] text-[34px]">✓</span>
+    <h1 class="mt-6 text-[32px] font-extrabold leading-tight tracking-tight">You're in, Maya</h1>
+    <p class="mt-2 text-[15px] text-[#5C6F66]">We'll remind you an hour before class.</p>
+    <div class="mt-8 w-full rounded-3xl bg-white p-5 text-left">
+      <p class="text-[13px] font-bold text-[#5C6F66]">Tuesday 13 · 07:00</p>
+      <p class="mt-1 text-[20px] font-extrabold">Vinyasa Flow</p>
+      <p class="text-[14px] text-[#5C6F66]">with Ines · Studio 2</p>
+      <div class="mt-4 border-t-2 border-dashed border-[#E7EFE9] pt-4 text-[14px] font-semibold">Pass: 2 classes left</div>
+    </div>
+    <button class="mt-6 w-full rounded-full bg-[#163A2F] py-4 text-[16px] font-bold text-white">Add to calendar</button>
+    <button class="mt-3 w-full py-3 text-[15px] font-bold">Back to classes</button>
+  </div>
+</template>
+
+<template id="before-1">
+  <div class="screen old bg-[#E4E7EB] text-[#222]">
+    <div class="old-bar px-3 pb-3 pt-10 text-center text-[17px] font-bold">Book a Class</div>
+    <div class="p-4">
+      <p class="text-[13px] text-[#555]">Step 1 of 5</p>
+      <p class="mt-1 text-[17px] font-bold">Select Location</p>
+      <div class="mt-3 rounded-lg border border-[#B7C0CA] bg-white p-3 text-[15px]">Choose a studio... ▾</div>
+      <p class="mt-5 text-[17px] font-bold">Select Member Type</p>
+      <div class="mt-3 space-y-2 text-[15px]">
+        <label class="flex items-center gap-2 rounded-lg border border-[#B7C0CA] bg-white p-3"><input type="radio">Member (monthly)</label>
+        <label class="flex items-center gap-2 rounded-lg border border-[#B7C0CA] bg-white p-3"><input type="radio">Member (annual)</label>
+        <label class="flex items-center gap-2 rounded-lg border border-[#B7C0CA] bg-white p-3"><input type="radio">Class pass holder</label>
+        <label class="flex items-center gap-2 rounded-lg border border-[#B7C0CA] bg-white p-3"><input type="radio">Drop-in / guest</label>
+      </div>
+      <p class="mt-5 text-[13px] leading-snug text-[#666]">Please note: bookings must be made at least 24 hours in advance. Cancellations within 12 hours will be charged. See terms and conditions for full cancellation policy.</p>
+      <div class="old-btn mt-6 p-3 text-center text-[17px] font-bold text-[#2A4C73]">Next &rsaquo;</div>
+    </div>
+  </div>
+</template>
+
+<template id="before-2">
+  <div class="screen old bg-[#E4E7EB] text-[#222]">
+    <div class="old-bar px-3 pb-3 pt-10 text-center text-[17px] font-bold">Book a Class</div>
+    <div class="p-4">
+      <p class="text-[13px] text-[#555]">Step 3 of 5</p>
+      <p class="mt-1 text-[17px] font-bold">Select Date and Time</p>
+      <div class="mt-3 grid grid-cols-2 gap-2 text-[15px]"><div class="rounded-lg border border-[#B7C0CA] bg-white p-3">DD/MM/YYYY</div><div class="rounded-lg border border-[#B7C0CA] bg-white p-3">HH:MM ▾</div></div>
+      <p class="mt-5 text-[17px] font-bold">Select Class</p>
+      <div class="mt-3 rounded-lg border border-[#B7C0CA] bg-white text-[14px]">
+        <div class="border-b border-[#D6DCE2] p-3">VINYASA FLOW (60) - INES - STUDIO 2 - 4 SPACES</div>
+        <div class="border-b border-[#D6DCE2] p-3">PILATES CORE (45) - DEV - STUDIO 1 - 9 SPACES</div>
+        <div class="border-b border-[#D6DCE2] p-3">LUNCH STRETCH (30) - INES - STUDIO 2 - 12 SPACES</div>
+        <div class="p-3 text-[#999]">SOUND BATH (50) - FULL</div>
+      </div>
+      <div class="mt-6 grid grid-cols-2 gap-2"><div class="old-btn p-3 text-center text-[17px] font-bold text-[#2A4C73]">&lsaquo; Back</div><div class="old-btn p-3 text-center text-[17px] font-bold text-[#2A4C73]">Next &rsaquo;</div></div>
+    </div>
+  </div>
+</template>
+
+<template id="before-3">
+  <div class="screen old bg-[#E4E7EB] text-[#222]">
+    <div class="old-bar px-3 pb-3 pt-10 text-center text-[17px] font-bold">Book a Class</div>
+    <div class="p-4">
+      <p class="text-[13px] text-[#555]">Step 5 of 5</p>
+      <p class="mt-1 text-[17px] font-bold">Payment Details</p>
+      <div class="mt-3 space-y-2 text-[15px] text-[#888]">
+        <div class="rounded-lg border border-[#B7C0CA] bg-white p-3">Name on card</div>
+        <div class="rounded-lg border border-[#B7C0CA] bg-white p-3">Card number</div>
+        <div class="grid grid-cols-2 gap-2"><div class="rounded-lg border border-[#B7C0CA] bg-white p-3">MM/YY</div><div class="rounded-lg border border-[#B7C0CA] bg-white p-3">CVV</div></div>
+        <div class="rounded-lg border border-[#B7C0CA] bg-white p-3">Billing postcode</div>
+        <div class="rounded-lg border border-[#B7C0CA] bg-white p-3">Promo code (optional)</div>
+      </div>
+      <label class="mt-4 flex gap-2 text-[13px] text-[#555]"><input type="checkbox">I agree to the terms, cancellation policy and privacy policy</label>
+      <div class="mt-6 grid grid-cols-2 gap-2"><div class="old-btn p-3 text-center text-[17px] font-bold text-[#2A4C73]">&lsaquo; Back</div><div class="old-btn p-3 text-center text-[17px] font-bold text-[#2A4C73]">Submit</div></div>
+    </div>
+  </div>
+</template>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const v = params.get('v') || 'after';
+  const root = document.getElementById('root');
+  const show = (n, from) => {
+    const node = document.getElementById(`${v}-${n}`).content.firstElementChild.cloneNode(true);
+    if (from) node.classList.add('hidden-right');
+    root.append(node);
+    if (from) requestAnimationFrame(() => requestAnimationFrame(() => { node.classList.remove('hidden-right'); from.classList.add('hidden-left'); }));
+    return node;
+  };
+  let current = show(params.get('screen') || 1);
+  // Flow for the walkthrough recording: Book → pick a time → Confirm.
+  root.addEventListener('click', (e) => {
+    if (e.target.closest('[data-book]')) current = show(2, current);
+    if (e.target.closest('[data-time]')) e.target.closest('[data-time]').classList.add('bg-[#163A2F]', 'text-white');
+    if (e.target.closest('[data-confirm]')) current = show(3, current);
+  });
+</script>
+</body>
+</html>

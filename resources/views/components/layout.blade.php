@@ -18,6 +18,27 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFFFFF" />
+
+    {{--
+        Runs before any CSS paints, so a visitor never sees the wrong theme
+        flash. theme.js reuses applyTheme() when the toggle changes it.
+        Preference: localStorage "light" | "dark", absent means System.
+    --}}
+    <script>
+        window.applyTheme = function (pref) {
+            var dark = pref === 'dark' || (pref !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+            document.querySelector('meta[name="theme-color"]').content = dark ? '#0B0C0E' : '#FFFFFF';
+        };
+        try { window.applyTheme(localStorage.getItem('theme')); } catch (e) { window.applyTheme(null); }
+        // html.motion lets animated elements start hidden (see app.css). If the
+        // app never starts, drop it so nothing stays hidden.
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.classList.add('motion');
+            setTimeout(function () { if (!window.appReady) document.documentElement.classList.remove('motion'); }, 4000);
+        }
+    </script>
     <title>{{ $fullTitle }}</title>
 
     @if ($description)
@@ -60,26 +81,21 @@
 
     {{ $head ?? '' }}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/archivo-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="flex min-h-screen flex-col bg-ink-950 text-paper">
+<body class="flex min-h-screen flex-col">
+    <a href="#main" class="sr-only z-[60] bg-action px-4 py-3 font-semibold text-action-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+
     <x-nav />
 
-    {{--
-        `perspective` scoped to <main>, not <body>: like backdrop-filter,
-        perspective != none makes its element a containing block for
-        `position: fixed` descendants - and x-nav's mobile overlay is fixed.
-        Keeping it on <main> (a sibling of x-nav) gives every card its tilt
-        without touching nav's fixed positioning.
-    --}}
-    <main class="flex-1 [perspective:1200px]">
+    <main id="main" tabindex="-1" class="flex-1 focus:outline-none">
         {{ $slot }}
     </main>
 
     <x-footer />
+
+    <x-here-bar />
 </body>
 </html>

@@ -6,6 +6,8 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WorkController;
+use App\Models\PricingPlan;
+use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -13,7 +15,7 @@ Route::view('/about', 'pages.about')->name('about');
 Route::view('/team', 'pages.team')->name('team');
 
 Route::get('/services', [PageController::class, 'services'])->name('services.index');
-Route::view('/services/{service}', 'pages.coming-soon', ['title' => 'Service'])->name('services.show');
+Route::get('/services/{service:slug}', [PageController::class, 'service'])->name('services.show');
 
 Route::get('/work', [WorkController::class, 'index'])->name('work.index');
 Route::get('/work/{project}', [WorkController::class, 'show'])->name('work.show');
@@ -34,3 +36,12 @@ Route::post('/newsletter', [NewsletterController::class, 'store'])
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
+// Dev-only component kit for the redesign (REDESIGN_PLAN.md, phase R1). Never
+// registered outside local, and deleted before launch.
+if (app()->isLocal()) {
+    Route::get('/_kit', fn () => view('kit', [
+        'services' => Service::whereNotNull('line')->orderBy('sort_order')->get(),
+        'plans' => PricingPlan::orderBy('sort_order')->get(),
+    ]))->name('kit');
+}

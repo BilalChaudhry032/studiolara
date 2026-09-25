@@ -34,6 +34,8 @@ class CaseStudySeeder extends Seeder
                     ['problem' => 'New users abandoned setup before activation', 'solution' => 'Redesigned onboarding into a guided, progressive flow'],
                 ],
                 'outcome_results' => 'The redesigned platform shipped in phases over 4 months, with a new component library covering 50+ screens and a measurably smoother onboarding path.',
+                'headline_result' => '50+ screens on one component library',
+                'duration_label' => '4 months',
                 'testimonial_quote' => null,
                 'testimonial_author' => null,
                 'testimonial_title' => null,
@@ -54,6 +56,7 @@ class CaseStudySeeder extends Seeder
                     ['problem' => 'Mobile checkout had a high abandonment rate', 'solution' => 'Redesigned the mobile checkout flow around fewer steps'],
                 ],
                 'outcome_results' => 'Launched a fully responsive storefront with a CMS the marketing team manages independently.',
+                'headline_result' => 'Marketing ships content without developers',
                 'testimonial_quote' => null,
                 'testimonial_author' => null,
                 'testimonial_title' => null,
@@ -73,6 +76,7 @@ class CaseStudySeeder extends Seeder
                     ['problem' => 'Multi-step booking form caused high drop-off', 'solution' => 'Condensed the flow into a single guided screen with smart defaults'],
                 ],
                 'outcome_results' => 'Shipped to both iOS and Android from one React Native codebase, with a streamlined booking flow.',
+                'headline_result' => 'iOS and Android from one codebase',
                 'testimonial_quote' => null,
                 'testimonial_author' => null,
                 'testimonial_title' => null,
@@ -80,10 +84,49 @@ class CaseStudySeeder extends Seeder
         ];
 
         foreach ($studies as $index => $study) {
-            CaseStudy::updateOrCreate(
+            $record = CaseStudy::updateOrCreate(
                 ['slug' => str($study['title'])->slug()],
-                $study + ['sort_order' => $index, 'published_at' => now()]
+                $study + ['is_sample' => true, 'sort_order' => $index, 'published_at' => now()]
             );
+
+            $this->attachSampleMedia($record);
+        }
+    }
+
+    /**
+     * Attaches the authored sample visuals (database/seeders/media/samples,
+     * made from resources/samples; see docs/asset-sources.md). Only fills
+     * empty collections, so re-seeding never duplicates or overwrites media
+     * the studio has uploaded since.
+     */
+    private function attachSampleMedia(CaseStudy $study): void
+    {
+        $dir = database_path("seeders/media/samples/{$study->slug}");
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $files = [
+            'cover' => ['cover.png'],
+            'before' => ['before.png'],
+            'after' => ['after.png'],
+            'gallery' => ['gallery-1.png'],
+            'video' => ['walkthrough.webm', 'walkthrough.mp4'],
+            'video_poster' => ['walkthrough-poster.png'],
+        ];
+
+        foreach ($files as $collection => $names) {
+            if ($study->getMedia($collection)->isNotEmpty()) {
+                continue;
+            }
+            foreach ($names as $name) {
+                if (is_file("{$dir}/{$name}")) {
+                    $study->addMedia("{$dir}/{$name}")
+                        ->preservingOriginal()
+                        ->withCustomProperties(['origin' => 'Authored sample of a fictional product, not client work. See docs/asset-sources.md.'])
+                        ->toMediaCollection($collection);
+                }
+            }
         }
     }
 }

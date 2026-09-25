@@ -1,47 +1,54 @@
-@php($navItems = config('navigation.main'))
+@php
+    $items = config('navigation.main');
+    $stations = array_map(fn ($item) => ['label' => $item['label'], 'href' => route($item['route'])], $items);
+
+    // A section's detail pages (services.show, work.show, blog.show) keep its station lit.
+    $current = collect($items)->search(fn ($item) => request()->routeIs(\Illuminate\Support\Str::before($item['route'], '.') . '*'));
+    $current = $current === false ? null : $current;
+@endphp
 
 {{--
-    x-data lives on this plain wrapper, not on <header>, because <header>
-    carries `backdrop-blur` (backdrop-filter) — and per the CSS spec, a
-    `filter`/`backdrop-filter` ancestor becomes the containing block for any
-    `position: fixed` descendant. The mobile overlay below is `fixed`; nested
-    inside the header it would size itself against the header's ~80px box
-    instead of the viewport, so its content overflows visibly with no opaque
-    background behind it. Keeping the overlay as a sibling of <header>
-    (both under this filter-free wrapper) keeps it fixed to the viewport.
+    x-data sits on this plain wrapper, not on <header>, so the fixed mobile
+    menu is the header's sibling rather than its child. While the menu is
+    open, everything behind it is made inert: focus cannot leave the menu,
+    and screen readers only see the menu.
 --}}
-<div x-data="{ open: false }">
-    <header class="sticky top-0 z-50 border-b border-ink-800/60 bg-ink-950/80 backdrop-blur">
-        <x-container class="flex h-20 items-center justify-between">
-            <a href="{{ route('home') }}" class="text-heading-md font-semibold tracking-tight text-paper">
-                {{ config('app.name') }}
-            </a>
+<div
+    x-data="{
+        open: false,
+        toggle(state) {
+            this.open = state;
+            document.documentElement.classList.toggle('overflow-hidden', state);
+            [...document.body.children].forEach((el) => { if (el !== this.$root) el.inert = state; });
+            this.$refs.header.inert = state;
+            this.$nextTick(() => (state ? this.$refs.close : this.$refs.menu).focus());
+        },
+    }"
+    @keydown.escape.window="open && toggle(false)"
+>
+    <header x-ref="header" class="sticky top-0 z-40 border-b border-rule bg-ground">
+        <x-container class="flex h-20 items-center gap-8">
+            <x-wordmark />
 
-            <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
-                @foreach ($navItems as $item)
-                    <a
-                        href="{{ route($item['route']) }}"
-                        class="text-eyebrow uppercase tracking-widest transition-colors duration-300 {{ request()->routeIs($item['route']) ? 'text-lime-500' : 'text-paper-dim hover:text-lime-500' }}"
-                    >
-                        {{ $item['label'] }}
-                    </a>
-                @endforeach
+            <nav aria-label="Primary" class="hidden flex-1 lg:block">
+                <x-route :stations="$stations" :current="$current" current-type="page" size="sm" />
             </nav>
 
-            <div class="hidden lg:block">
-                <x-button href="{{ route('contact') }}" variant="primary">Book a Call</x-button>
+            <div class="hidden items-center gap-5 lg:flex">
+                <x-theme-toggle />
+                <x-button href="{{ route('contact') }}" size="sm">Book a call</x-button>
             </div>
 
             <button
-                @click="open = true"
-                class="text-paper lg:hidden"
-                aria-label="Open menu"
-                aria-haspopup="true"
+                x-ref="menu"
+                type="button"
+                @click="toggle(true)"
+                class="ml-auto inline-flex min-h-11 items-center gap-2 text-body-md font-semibold stretch-semi lg:hidden"
+                aria-haspopup="dialog"
                 :aria-expanded="open"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-                </svg>
+                Menu
+                <x-heroicon-o-bars-3 class="h-6 w-6" aria-hidden="true" />
             </button>
         </x-container>
     </header>
@@ -52,37 +59,34 @@
         x-transition:enter="transition ease-out-expo duration-300"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-50 flex flex-col bg-ink-950 lg:hidden"
+        class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ground lg:hidden"
         role="dialog"
         aria-modal="true"
-        @keydown.escape.window="open = false"
+        aria-label="Menu"
     >
-        <div class="flex h-20 items-center justify-between px-5">
-            <span class="text-heading-md font-semibold text-paper">{{ config('app.name') }}</span>
-            <button @click="open = false" class="text-paper" aria-label="Close menu">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
+        <div class="flex h-20 shrink-0 items-center justify-between border-b border-rule px-5 sm:px-8">
+            <x-wordmark />
+            <button
+                x-ref="close"
+                type="button"
+                @click="toggle(false)"
+                class="inline-flex min-h-11 items-center gap-2 text-body-md font-semibold stretch-semi"
+            >
+                Close
+                <x-heroicon-o-x-mark class="h-6 w-6" aria-hidden="true" />
             </button>
         </div>
 
-        <nav class="flex flex-1 flex-col items-start justify-center gap-6 px-8" aria-label="Mobile">
-            @foreach ($navItems as $item)
-                <a
-                    @click="open = false"
-                    href="{{ route($item['route']) }}"
-                    class="text-display-md font-semibold {{ request()->routeIs($item['route']) ? 'text-lime-500' : 'text-paper hover:text-lime-500' }}"
-                >
-                    {{ $item['label'] }}
-                </a>
-            @endforeach
+        <nav aria-label="Primary" class="flex-1 px-6 py-8 sm:px-10">
+            <x-route :stations="$stations" :current="$current" current-type="page" orientation="vertical" size="lg" />
         </nav>
 
-        <div class="px-8 pb-10">
-            <x-button href="{{ route('contact') }}" variant="primary" class="w-full">Book a Call</x-button>
+        <div class="space-y-4 px-6 pb-8 sm:px-10">
+            <x-button href="{{ route('contact') }}" class="w-full">Book a call</x-button>
+            <x-theme-toggle />
         </div>
     </div>
 </div>

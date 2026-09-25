@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grid and Grain Online Store (sample, before)</title>
+<script src="prints.js"></script>
+<style>
+  body { margin: 0; font: 12px Tahoma, Arial, sans-serif; color: #333; background: #CFC6B8; height: 100vh; overflow: hidden; }
+  .page { width: 1100px; margin: 0 auto; background: #fff; min-height: 100vh; box-shadow: 0 0 8px rgba(0,0,0,.3); }
+  .top { display: flex; align-items: center; padding: 10px 14px; border-bottom: 3px solid #8B3A1F; }
+  .logo { font: italic bold 30px 'Times New Roman', serif; color: #8B3A1F; }
+  .top .right { margin-left: auto; text-align: right; line-height: 1.6; }
+  .nav { background: #8B3A1F; padding: 0 8px; }
+  .nav a { display: inline-block; color: #fff; padding: 7px 10px; font-weight: bold; border-right: 1px solid #A85A3E; }
+  .banner { margin: 8px; padding: 14px; text-align: center; background: repeating-linear-gradient(45deg, #FFE45C, #FFE45C 12px, #FFD21F 12px, #FFD21F 24px); border: 2px dashed #C00; }
+  .banner b { font: bold 30px Impact, sans-serif; color: #C00; letter-spacing: 2px; }
+  .cols { display: grid; grid-template-columns: 180px 1fr; gap: 8px; padding: 0 8px; }
+  .side h4 { margin: 0 0 4px; padding: 4px; background: #EFE6D8; border: 1px solid #D5C6AE; }
+  .side ul { margin: 0 0 10px; padding-left: 16px; line-height: 1.8; }
+  a { color: #0645AD; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .p { border: 1px solid #ddd; padding: 5px; text-align: center; font-size: 11px; }
+  .p .img { height: 110px; overflow: hidden; margin-bottom: 4px; }
+  .p .old { text-decoration: line-through; color: #999; }
+  .p .price { color: #C00; font-weight: bold; font-size: 13px; }
+  .buy { display: inline-block; margin-top: 3px; padding: 2px 8px; background: linear-gradient(#FFB347, #FF8C00); border: 1px solid #C66A00; color: #fff; font-weight: bold; border-radius: 3px; }
+  .note { margin: 8px 0; padding: 6px; background: #F9F5EE; border: 1px solid #E5D9C5; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top"><span class="logo">Grid and Grain Prints</span><div class="right">Call us: 0800-PRINTS (Mon-Fri 9-5)<br><a>Login</a> | <a>Register</a> | <a>My Cart (2 items)</a> | <a>Checkout</a></div></div>
+  <div class="nav"><a>HOME</a><a>ALL PRINTS</a><a>NEW!!</a><a>SALE</a><a>FRAMES</a><a>GIFT VOUCHERS</a><a>ABOUT US</a><a>CONTACT</a><a>FAQ</a></div>
+  <div class="banner"><b>MEGA SPRING SALE!!! UP TO 50% OFF</b><br>Use code SPRING50 at checkout. Excludes frames, vouchers and new arrivals. Limited time only!</div>
+  <div class="cols">
+    <div class="side">
+      <h4>Categories</h4><ul><li><a>Abstract</a> (41)</li><li><a>Geometric</a> (28)</li><li><a>Botanical</a> (19)</li><li><a>Architecture</a> (12)</li><li><a>Vintage</a> (7)</li><li><a>Kids</a> (3)</li><li><a>Misc</a> (22)</li></ul>
+      <h4>Shop by Price</h4><ul><li><a>Under $20</a></li><li><a>$20 - $40</a></li><li><a>$40 - $60</a></li><li><a>Over $60</a></li></ul>
+      <h4>Newsletter</h4><div>Sign up for deals!<br><input size="16"> <span class="buy">GO</span></div>
+    </div>
+    <div>
+      <div class="note"><b>Welcome to Grid and Grain!</b> We have been selling quality art prints since 2009. All prints are printed on high quality paper. Delivery takes 5-10 working days. Please allow extra time during busy periods. Returns accepted within 14 days in original packaging only. See our <a>Terms &amp; Conditions</a> for details.</div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('grid').innerHTML = PRINTS.concat(PRINTS.slice(0, 2)).map(([name, , price], i) => `
+    <div class="p"><div class="img">${printArt(i + 11, 200, 160)}</div><a>${name} Art Print Poster Wall Decor</a><br>
+    <span class="old">$${price + 20}.00</span> <span class="price">$${price}.00</span><br><span class="buy">BUY NOW</span></div>`).join('');
+</script>
+</body>
+</html>

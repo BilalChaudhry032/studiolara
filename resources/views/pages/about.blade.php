@@ -21,15 +21,6 @@
         </x-container>
     </section>
 
-    {{-- CLIENT LOGOS MARQUEE --}}
-    <section class="border-y border-ink-800 py-12">
-        <x-marquee speed="28">
-            @for ($i = 1; $i <= 6; $i++)
-                <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" class="w-48" />
-            @endfor
-        </x-marquee>
-    </section>
-
     {{-- NARRATIVE + TRAIT CALLOUTS --}}
     <section class="py-24">
         <x-container class="grid gap-16 lg:grid-cols-2">
@@ -94,25 +85,6 @@
         </x-container>
     </section>
 
-    {{-- STATS + CTA --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container class="text-center">
-            <x-section-heading eyebrow="Our Track Record" align="center" class="mx-auto">
-                We Deliver Results That Speak for Themselves
-            </x-section-heading>
-
-            <div class="mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-6">
-                <x-stat-counter :target="150" suffix="+" label="Projects Delivered" />
-                <x-stat-counter :target="8" suffix="+" label="Years in Business" />
-                <x-stat-counter :target="40" suffix="%" label="Avg. Conversion Lift" />
-            </div>
-
-            <div class="mt-10">
-                <x-button href="{{ route('contact') }}" variant="primary">Let's Talk</x-button>
-            </div>
-        </x-container>
-    </section>
-
     {{-- FOOTER CTA --}}
     <section class="border-t border-ink-800 py-24">
         <x-container class="mx-auto max-w-2xl text-center">
@@ -144,7 +116,7 @@
                     ['q' => 'How long does a typical project take?', 'a' => 'A Starter MVP typically takes 3–8 weeks. A full Growth-tier product build runs 3–6 months. Scale-tier enterprise engagements run 6–12+ months depending on scope.'],
                     ['q' => 'Can I edit the website myself after launch?', 'a' => 'Yes — content (case studies, services, team, blog, pricing) is managed through an admin panel, so you can update copy and media without touching code.'],
                 ] as $index => $faq)
-                    <div class="py-6" data-reveal>
+                    <div class="py-6">
                         <button
                             type="button"
                             @click="open = open === {{ $index }} ? null : {{ $index }}"

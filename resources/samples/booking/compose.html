@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Juniper — screens (sample)</title>
+<style>
+  html, body { margin: 0; width: 1440px; height: 900px; overflow: hidden; }
+  body { display: grid; place-items: center; }
+  .row { display: flex; gap: 64px; align-items: center; }
+  .phone { width: 312px; height: 675px; border-radius: 44px; overflow: hidden; box-shadow: 0 0 0 10px #10201A, 0 40px 80px rgba(16,32,26,.28); position: relative; }
+  .phone iframe { width: 390px; height: 844px; border: 0; transform: scale(0.8); transform-origin: 0 0; }
+  .lift { transform: translateY(-24px); }
+</style>
+</head>
+<body>
+  <div class="row" id="row"></div>
+<script>
+  const v = new URLSearchParams(location.search).get('v') || 'after';
+  document.body.style.background = v === 'after' ? '#E7DCCB' : '#C9CDD2';
+  document.getElementById('row').innerHTML = [1, 2, 3].map((n) =>
+    `<div class="phone ${n === 2 ? 'lift' : ''}"><iframe src="phone.html?v=${v}&screen=${n}" title="Screen ${n}"></iframe></div>`).join('');
+</script>
+</body>
+</html>
