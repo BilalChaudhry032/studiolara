@@ -40,7 +40,16 @@ class CaseStudyResource extends Resource
                         Forms\Components\TagsInput::make('tools')
                             ->placeholder('Add a tool (e.g. Figma) and press Enter')
                             ->columnSpanFull(),
+                        Forms\Components\TextInput::make('headline_result')
+                            ->maxLength(120)
+                            ->helperText('The one-line result shown on the arrival board, e.g. "50+ screens on one component library".'),
+                        Forms\Components\TextInput::make('duration_label')
+                            ->maxLength(40)
+                            ->helperText('Journey time, e.g. "4 months". Leave empty if not confirmed.'),
                         Forms\Components\DateTimePicker::make('published_at'),
+                        Forms\Components\Toggle::make('is_sample')
+                            ->label('Sample project')
+                            ->helperText('Demonstration work, not a real client. Shown with a "Sample project" label.'),
                         Forms\Components\TextInput::make('sort_order')
                             ->required()
                             ->numeric()
@@ -92,6 +101,24 @@ class CaseStudyResource extends Resource
                             ->image()
                             ->multiple()
                             ->reorderable(),
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('before')
+                            ->collection('before')
+                            ->image()
+                            ->helperText('Departure: the product before the project. Same size as "After" for the comparison slider.'),
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('after')
+                            ->collection('after')
+                            ->image()
+                            ->helperText('Arrival: the product after the project.'),
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('video')
+                            ->collection('video')
+                            ->acceptedFileTypes(['video/mp4', 'video/webm'])
+                            ->multiple()
+                            ->maxFiles(2)
+                            ->helperText('Optional walkthrough, muted, under 10 seconds: an MP4 (H.264) and a WebM of the same clip.'),
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('video_poster')
+                            ->collection('video_poster')
+                            ->image()
+                            ->helperText('The video\'s first frame, shown before it plays.'),
                     ]),
             ]);
     }

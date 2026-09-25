@@ -16,6 +16,7 @@ class TestimonialSeeder extends Seeder
                 'author_title' => 'CEO',
                 'company' => 'Tech Solutions Inc.',
                 'sort_order' => 0,
+                'is_sample' => true,
             ]
         );
     }

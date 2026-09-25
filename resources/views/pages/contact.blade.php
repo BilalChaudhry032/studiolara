@@ -119,25 +119,25 @@
                         Book a 30-minute call with our team to discuss your project, goals, and how we can help.
                         Our calendar displays available times in your local timezone.
                     </p>
-                    <x-button href="https://calendly.com/your-agency/strategy-call" variant="outline" class="mt-6 w-full">
+                    <x-button href="{{ config('studio.calendly_url') }}" variant="outline" class="mt-6 w-full">
                         Book a Call on Calendly
                     </x-button>
                 </x-card>
 
                 <x-card>
                     <p class="text-heading-md font-semibold text-paper">Dedicated Support</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Phone: +1 (555) 123-4567</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">Phone: {{ config('studio.phone') }}</p>
                 </x-card>
 
                 <x-card>
                     <p class="text-heading-md font-semibold text-paper">Simple & Transparent Billing</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">Email: contact@agency.com</p>
+                    <p class="mt-2 text-body-sm text-paper-dim">Email: {{ config('studio.email') }}</p>
                 </x-card>
 
                 <x-card>
                     <p class="text-heading-md font-semibold text-paper">Join Our Team</p>
                     <p class="mt-2 text-body-sm text-paper-dim">Open to collaborating with great talent.</p>
-                    <a href="mailto:careers@agency.com" class="mt-3 inline-block text-body-sm text-lime-500 hover:underline">
+                    <a href="mailto:{{ config('studio.careers_email') }}" class="mt-3 inline-block text-body-sm text-lime-500 hover:underline">
                         Submit Your Resume →
                     </a>
                 </x-card>
@@ -159,7 +159,7 @@
                     ['step' => '03', 'name' => 'Proposal & Agreement', 'blurb' => 'Review our detailed proposal, refine any aspects, and finalize the agreement (usually 1 week).'],
                     ['step' => '04', 'name' => 'Kick-off & Execution', 'blurb' => 'We kick off the project, maintaining regular communication and transparency throughout.'],
                 ] as $step)
-                    <div data-reveal>
+                    <div>
                         <p class="text-eyebrow text-lime-500">{{ $step['step'] }}</p>
                         <p class="mt-3 text-heading-md font-semibold text-paper">{{ $step['name'] }}</p>
                         <p class="mt-2 text-body-sm text-paper-dim">{{ $step['blurb'] }}</p>
@@ -169,12 +169,4 @@
         </x-container>
     </section>
 
-    {{-- SERVICE TAG STRIP --}}
-    <section class="border-y border-ink-800 py-6">
-        <x-marquee speed="22">
-            @foreach (['UI/UX Design', 'Web Development', 'SaaS Product Development', 'Mobile App Design & Dev', 'CMS Development'] as $tag)
-                <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
-            @endforeach
-        </x-marquee>
-    </section>
 </x-layout>

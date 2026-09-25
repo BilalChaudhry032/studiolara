@@ -30,6 +30,10 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->unique(ignoreRecord: true),
+                Forms\Components\Select::make('line')
+                    ->options(\App\Models\Service::LINES)
+                    ->unique(ignoreRecord: true)
+                    ->helperText('The route letter and colour this service uses across the site. Each line belongs to one service.'),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),

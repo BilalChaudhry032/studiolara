@@ -12,6 +12,7 @@ class ServiceSeeder extends Seeder
         $services = [
             [
                 'title' => 'UI/UX Design',
+                'line' => 'u',
                 'description' => 'We design intuitive, conversion-focused digital experiences that connect brand, strategy, and usability. Deliverables include user research, journey mapping, wireframes, prototypes, design systems, and polished UI for SaaS dashboards, marketing sites, and mobile products.',
                 'tools_technologies' => ['Figma', 'FigJam', 'Adobe XD', 'Design systems', 'Accessibility best practices', 'Usability testing'],
                 'best_for' => 'Startups, product teams, and companies redesigning complex experiences or launching new digital products.',
@@ -20,6 +21,7 @@ class ServiceSeeder extends Seeder
             ],
             [
                 'title' => 'Web Development',
+                'line' => 'w',
                 'description' => 'We build fast, scalable websites and web applications with clean architecture and performance in mind. From interactive marketing websites to robust platforms, we develop responsive experiences that are SEO-ready, maintainable, and built to support growth.',
                 'tools_technologies' => ['React', 'Next.js', 'TypeScript', 'Modern CMS integrations', 'APIs', 'Technical SEO'],
                 'best_for' => 'Growth-stage businesses, founders, and teams that need a high-performance digital presence or custom web product.',
@@ -28,6 +30,7 @@ class ServiceSeeder extends Seeder
             ],
             [
                 'title' => 'SaaS Product Development',
+                'line' => 's',
                 'description' => 'We take SaaS ideas from concept to launch with product strategy, UX, and engineering aligned from day one. We help define MVP scope, build multi-tenant systems, design subscription flows, and create dashboards that make complex workflows feel simple.',
                 'tools_technologies' => ['Full-stack development', 'Subscription architecture', 'Admin dashboards', 'Analytics', 'API-first systems'],
                 'best_for' => 'SaaS founders, product-led teams, and businesses launching software products or expanding platform capabilities.',
@@ -36,6 +39,7 @@ class ServiceSeeder extends Seeder
             ],
             [
                 'title' => 'Mobile App Design & Dev',
+                'line' => 'm',
                 'description' => 'We create mobile experiences that feel premium, clear, and effortless across iOS and Android. Our process combines product thinking, interaction design, and cross-platform engineering to deliver apps that are ready for real users and real-world growth.',
                 'tools_technologies' => ['React Native', 'Mobile UX patterns', 'App prototyping', 'User testing', 'Design systems', 'API integrations'],
                 'best_for' => 'Consumer apps, service businesses, startups, and teams bringing an app idea to market.',
@@ -44,6 +48,7 @@ class ServiceSeeder extends Seeder
             ],
             [
                 'title' => 'CMS Development',
+                'line' => 'c',
                 'description' => 'We build elegant, easy-to-manage content systems that give teams control without sacrificing design quality. Whether you need a marketing site, ecommerce experience, or content-rich platform, we create flexible CMS setups tailored to your workflow and growth goals.',
                 'tools_technologies' => ['Webflow', 'WordPress', 'Shopify', 'HubSpot', 'Squarespace', 'Magento'],
                 'best_for' => 'Marketing teams, content-led brands, ecommerce businesses, and organizations that update content frequently.',

@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "resources/samples/saas/before.html"
+        ],
+        "createdAt": "2026-09-24T08:30:54.630Z",
+        "reason": "Claude: intentional depiction of a dated legacy UI for a before/after screenshot; never served as a page"
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "resources/samples/saas/before.html"
+        ],
+        "createdAt": "2026-09-24T08:30:54.636Z",
+        "reason": "Claude: intentional depiction of a dated legacy UI for a before/after screenshot; never served as a page"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "resources/samples/store/before.html"
+        ],
+        "createdAt": "2026-09-24T08:32:24.213Z",
+        "reason": "Claude: intentional depiction of a dated legacy storefront for a before/after screenshot; never served as a page"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "resources/samples/booking/phone.html"
+        ],
+        "createdAt": "2026-09-24T08:33:34.425Z",
+        "reason": "Claude: file holds the intentionally dated before-screens and a deliberately dimmed full-class card; screenshot source, never served"
+      }
+    ]
+  }
+}

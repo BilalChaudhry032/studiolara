@@ -1,242 +1,222 @@
+@php
+    $lineKeys = $services->pluck('line')->all();
+    $lineFill = ['u' => 'bg-line-u', 'w' => 'bg-line-w', 's' => 'bg-line-s', 'm' => 'bg-line-m', 'c' => 'bg-line-c'];
+
+    // Spine geometry (lg+): the line runs 24px left of the container's content edge.
+    $sectionStop = 'absolute left-[-37px] top-1/2 hidden h-[26px] w-[26px] -translate-y-1/2 rounded-full border-4 border-text bg-ground transition-colors duration-150 [&.is-passed]:bg-text lg:block';
+@endphp
+
 <x-layout
     title="Home"
-    description="We design & build digital products that actually grow businesses — strategy-first discovery, premium UX/UI, and scalable engineering for ambitious startups and growth-stage teams."
+    description="One team, one line: strategy, product design and engineering for startups and growing companies, from idea to launch."
 >
-    {{-- HERO --}}
-    <section class="relative overflow-hidden py-24 lg:py-32">
-        <p
-            aria-hidden="true"
-            class="pointer-events-none absolute inset-x-0 top-8 select-none whitespace-nowrap text-center text-[18vw] font-semibold leading-none text-ink-800/60 lg:text-[14rem]"
-        >
-            STUDIO
-        </p>
-
-        <x-container class="relative">
-            <div class="mx-auto max-w-4xl text-center">
-                <h1 class="text-display-xl font-semibold text-paper">
-                    We Design &amp; Build Digital Products That Actually Grow Businesses
-                </h1>
-                <p class="mx-auto mt-6 max-w-2xl text-body-lg text-paper-dim">
-                    We help ambitious startups and growing companies turn ideas into polished digital
-                    experiences that attract attention, convert visitors, and support long-term business growth.
-                </p>
-
-                <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-                    <x-button href="{{ route('contact') }}" variant="primary">Book Your Free Strategy Call Today</x-button>
-                    <x-button href="{{ route('work.index') }}" variant="outline">See Case Studies &amp; Recent Work</x-button>
-                </div>
-
-                <p class="mt-8 text-body-sm uppercase tracking-widest text-muted">
-                    8+ Years in Business &nbsp;·&nbsp; 150+ Projects Completed &nbsp;·&nbsp; 60+ Clients Served
-                </p>
-            </div>
-
-            <div class="mx-auto mt-16 max-w-3xl">
-                <x-hero-video label="Product showcase reel" />
-            </div>
-        </x-container>
-    </section>
-
-    {{-- CLIENT LOGOS MARQUEE --}}
-    <section class="border-y border-ink-800 py-12">
-        <p class="text-center text-body-sm uppercase tracking-widest text-muted">
-            Trusted by founders across the US &amp; EU
-        </p>
-        <x-marquee speed="28" class="mt-8">
-            @for ($i = 1; $i <= 6; $i++)
-                <x-placeholder-image label="Client logo" ratio="aspect-[3/1]" class="w-48" />
-            @endfor
-        </x-marquee>
-    </section>
-
-    {{-- VALUE PROPOSITION / BENEFIT CARDS --}}
-    <section class="py-24">
+    {{-- HERO: what Studio is, who it's for, what it costs, and the next step, in one screen. --}}
+    <section class="relative overflow-hidden pt-10 md:pt-16 lg:pt-20">
         <x-container>
-            <x-section-heading
-                eyebrow="Our Approach"
-                align="center"
-                subtext="Most agencies focus on deliverables. We focus on outcomes — blending product strategy, conversion-focused design, and robust engineering."
-                class="mx-auto"
-            >
-                Not Just Design. Not Just Development. Real Product Impact.
-            </x-section-heading>
-
-            <div class="mt-12 grid gap-6 sm:grid-cols-3">
-                <x-card>
-                    <p class="text-heading-md font-semibold text-paper">Product-First Thinking</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">
-                        We design around user journeys, business objectives, and product-market fit — not just visuals.
+            <div class="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
+                <div class="lg:col-span-7">
+                    <h1 class="text-balance text-display-xl font-extrabold stretch-condensed">One team. One line. From idea to launch.</h1>
+                    <p class="mt-6 max-w-[46ch] text-body-lg text-text-2">
+                        Strategy, product design and engineering for startups and growing companies, run by one accountable team instead of a chain of vendors.
                     </p>
-                </x-card>
-                <x-card>
-                    <p class="text-heading-md font-semibold text-paper">Conversion-Driven Design</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">
-                        Every page, interaction, and CTA is optimized to move visitors forward, not just look good.
-                    </p>
-                </x-card>
-                <x-card>
-                    <p class="text-heading-md font-semibold text-paper">Scalable Engineering</p>
-                    <p class="mt-2 text-body-sm text-paper-dim">
-                        Clean, robust development architecture built to grow with your team, roadmap, and traffic.
-                    </p>
-                </x-card>
-            </div>
-        </x-container>
-    </section>
-
-    {{-- SERVICES GRID --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container>
-            <x-section-heading eyebrow="What We Do" subtext="Five core disciplines, one accountable team.">
-                Services Built Around Business Outcomes
-            </x-section-heading>
-
-            <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                @foreach ($services as $service)
-                    <a href="{{ route('contact') }}" class="group block">
-                        <x-card class="h-full transition-colors duration-300 group-hover:border-lime-500">
-                            <div class="flex items-start justify-between gap-4">
-                                <p class="text-heading-md font-semibold text-paper">{{ $service->title }}</p>
-                                <x-heroicon-o-arrow-up-right class="h-5 w-5 shrink-0 text-paper-dim transition-colors duration-300 group-hover:text-lime-500" />
-                            </div>
-                            <p class="mt-3 text-body-sm text-paper-dim">{{ str($service->description)->limit(110) }}</p>
-                        </x-card>
-                    </a>
-                @endforeach
-            </div>
-        </x-container>
-    </section>
-
-    {{-- PROCESS --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container>
-            <x-section-heading eyebrow="Our Process" subtext="A methodology designed for clarity and momentum.">
-                Discover. Define. Design. Build. Refine.
-            </x-section-heading>
-
-            <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-                @foreach ([
-                    ['step' => '01', 'name' => 'Discover', 'blurb' => 'Understand your users, business model, and goals.'],
-                    ['step' => '02', 'name' => 'Define', 'blurb' => 'Translate research into a focused strategy and scope.'],
-                    ['step' => '03', 'name' => 'Design', 'blurb' => 'Design with conversion, clarity, and confidence in mind.'],
-                    ['step' => '04', 'name' => 'Build', 'blurb' => 'Build with scalability, performance, and stability at the core.'],
-                    ['step' => '05', 'name' => 'Refine', 'blurb' => 'Refine based on real feedback and performance data.'],
-                ] as $step)
-                    <div data-reveal>
-                        <p class="text-eyebrow text-lime-500">{{ $step['step'] }}</p>
-                        <p class="mt-3 text-heading-md font-semibold text-paper">{{ $step['name'] }}</p>
-                        <p class="mt-2 text-body-sm text-paper-dim">{{ $step['blurb'] }}</p>
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+                        <x-button :href="route('contact')">Book a strategy call</x-button>
+                        <x-button :href="route('work.index')" variant="ghost" class="self-start sm:self-auto">See the work</x-button>
                     </div>
-                @endforeach
+                </div>
+
+                <x-departures :plans="$plans" class="lg:col-span-5" />
             </div>
+
+            <x-hero-map class="mt-12 md:mt-16" :lines="$lineKeys" :stations="array_column($process, 'name')" />
         </x-container>
     </section>
 
-    {{-- WHY CHOOSE US + STATS --}}
-    <section class="border-t border-ink-800 py-24">
-        <x-container class="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <div>
-                <x-section-heading eyebrow="Why Choose Us">
-                    Senior-Level Thinking, From Discovery Through Launch
-                </x-section-heading>
-                <ul class="mt-8 space-y-4">
-                    @foreach ([
-                        'Senior-level thinking from discovery through launch',
-                        'Tailored solutions instead of one-size-fits-all templates',
-                        'Clear priorities that reduce wasted time and scope creep',
-                        'Design and development aligned around measurable business outcomes',
-                    ] as $point)
-                        <li class="flex items-start gap-3 text-body-md text-paper-dim">
-                            <x-heroicon-o-check-circle class="mt-0.5 h-5 w-5 shrink-0 text-lime-500" />
-                            {{ $point }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+    {{-- From here the page is one ride. On lg+ the spine runs down the left gutter, 24px left of the content edge, with a train at the reader's position. --}}
+    <div data-ride class="relative">
+        <span data-track aria-hidden="true" class="absolute left-[calc(max(0px,(100%_-_90rem)/2)_+_21px)] top-0 hidden w-1.5 bg-rule lg:block"></span>
+        <span data-fill aria-hidden="true" class="absolute left-[calc(max(0px,(100%_-_90rem)/2)_+_21px)] top-0 hidden h-0 w-1.5 bg-text motion-reduce:!hidden lg:block"></span>
+        <span data-train aria-hidden="true" class="absolute left-[calc(max(0px,(100%_-_90rem)/2)_+_9px)] top-[-15px] hidden motion-reduce:!hidden lg:block"><x-train /></span>
 
-            <div class="grid grid-cols-3 gap-6 rounded-2xl border border-ink-700 bg-ink-900 p-8 text-center">
-                <x-stat-counter :target="150" suffix="+" label="Projects Delivered" />
-                <x-stat-counter :target="8" suffix="+" label="Years in Business" />
-                <x-stat-counter :target="40" suffix="%" label="Avg. Conversion Lift" />
-            </div>
-        </x-container>
-    </section>
-
-    {{-- PORTFOLIO TEASER --}}
-    @if ($featuredCaseStudies->isNotEmpty())
-        <section class="border-t border-ink-800 py-24">
+        {{-- THE LINE: the five stations every project rides. --}}
+        <section data-station="The line" class="pb-16 md:pb-28 md:pt-28">
             <x-container>
-                <div class="flex flex-wrap items-end justify-between gap-4">
-                    <x-section-heading eyebrow="Selected Work">
-                        Recent Case Studies
-                    </x-section-heading>
-                    <x-button href="{{ route('work.index') }}" variant="ghost">View All Projects</x-button>
+                {{-- On phones this line continues the hero's trunk straight down. --}}
+                <div data-ride="from-top" class="relative">
+                    <span data-track aria-hidden="true" class="absolute left-[10px] top-0 w-1.5 bg-text lg:hidden"></span>
+                    <span data-train aria-hidden="true" class="absolute left-[-2px] top-[-15px] motion-reduce:hidden lg:hidden"><x-train /></span>
+
+                    <div class="relative">
+                        <span data-stop aria-hidden="true" class="{{ $sectionStop }}"></span>
+                        <x-sign class="relative z-10">The line</x-sign>
+                    </div>
+                    <p class="mt-6 max-w-prose pl-11 text-body-lg text-text-2 lg:pl-0">
+                        Every project rides the same five stations, with the same team from the first call to launch.
+                    </p>
+
+                    <ol class="mt-12">
+                        @foreach ($process as $stop)
+                            <li class="relative grid gap-3 pb-12 pl-11 last:pb-0 lg:grid-cols-12 lg:gap-8 lg:pb-16 lg:pl-0">
+                                <span data-stop aria-hidden="true" class="absolute left-[2px] top-[5px] h-[22px] w-[22px] rounded-full border-4 border-text bg-ground transition-colors duration-150 [&.is-passed]:bg-text lg:left-[-35px] lg:top-4"></span>
+                                <h3 class="text-display-md font-extrabold stretch-condensed lg:col-span-3">{{ $stop['name'] }}</h3>
+                                <p class="max-w-prose text-body-lg text-text-2 lg:col-span-5 lg:pt-2">{{ $stop['summary'] }}</p>
+                                <div class="lg:col-span-4 lg:pt-2">
+                                    <h4 class="text-body-sm font-semibold uppercase tracking-[0.06em] text-text-3">You get</h4>
+                                    <ul class="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 text-body-md lg:block lg:space-y-1.5">
+                                        @foreach ($stop['gets'] as $get)
+                                            <li class="flex gap-3"><span aria-hidden="true" class="mt-[0.6em] h-1.5 w-3 shrink-0 bg-text"></span>{{ $get }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ol>
+                </div>
+            </x-container>
+        </section>
+
+        {{-- PICK YOUR LINE: the five services, each drawn as its own line. --}}
+        <section data-station="Pick your line" class="py-16 md:py-28">
+            <x-container>
+                <div class="relative">
+                    <span data-stop aria-hidden="true" class="{{ $sectionStop }}"></span>
+                    <x-sign :lines="$lineKeys">Pick your line</x-sign>
+                </div>
+                <p class="mt-6 max-w-prose text-body-lg text-text-2">
+                    Five disciplines, one accountable team. Every line runs into the same trunk, so nothing gets lost between vendors.
+                </p>
+
+                {{-- Desktop: the lines as tabs; the chosen one comes forward. --}}
+                <div x-data="{ active: 0 }" class="mt-12 hidden gap-12 lg:grid lg:grid-cols-12">
+                    <div
+                        role="tablist"
+                        aria-label="Service lines"
+                        aria-orientation="vertical"
+                        class="flex flex-col lg:col-span-4"
+                        @keydown.arrow-down.prevent="active = (active + 1) % {{ $services->count() }}; $nextTick(() => $el.querySelectorAll('[role=tab]')[active].focus())"
+                        @keydown.arrow-up.prevent="active = (active + {{ $services->count() - 1 }}) % {{ $services->count() }}; $nextTick(() => $el.querySelectorAll('[role=tab]')[active].focus())"
+                    >
+                        @foreach ($services as $i => $service)
+                            <button
+                                type="button"
+                                role="tab"
+                                id="line-tab-{{ $i }}"
+                                aria-controls="line-panel-{{ $i }}"
+                                :aria-selected="active === {{ $i }}"
+                                :tabindex="active === {{ $i }} ? 0 : -1"
+                                @click="active = {{ $i }}"
+                                class="group flex min-h-14 items-center gap-4 text-left"
+                            >
+                                <x-bullet :line="$service->line" />
+                                <span class="text-heading-md font-bold stretch-semi transition-colors duration-150" :class="active === {{ $i }} ? 'text-text' : 'text-text-2 group-hover:text-text'">{{ $service->title }}</span>
+                                <span aria-hidden="true" class="h-2.5 flex-1 transition-[opacity,transform] duration-300 ease-out-expo {{ $lineFill[$service->line] }}" :class="active === {{ $i }} ? 'opacity-100' : 'opacity-25 scale-y-50'"></span>
+                            </button>
+                        @endforeach
+                    </div>
+
+                    <div class="lg:col-span-8">
+                        @foreach ($services as $i => $service)
+                            <x-line-panel
+                                :service="$service"
+                                role="tabpanel"
+                                id="line-panel-{{ $i }}"
+                                aria-labelledby="line-tab-{{ $i }}"
+                                tabindex="0"
+                                x-show="active === {{ $i }}"
+                                :x-cloak="$i > 0"
+                            />
+                        @endforeach
+                    </div>
                 </div>
 
-                <div class="mt-12 grid gap-6 md:grid-cols-3">
-                    @foreach ($featuredCaseStudies as $project)
-                        <a href="{{ route('work.show', $project) }}" class="group block">
-                            @if ($project->getFirstMediaUrl('cover'))
-                                <img
-                                    src="{{ $project->getFirstMediaUrl('cover') }}"
-                                    alt="{{ $project->title }}"
-                                    loading="lazy"
-                                    class="aspect-[4/3] w-full rounded-2xl border border-ink-700 object-cover"
-                                >
-                            @else
-                                <x-placeholder-image :label="$project->title" />
+                {{-- Phones and tablets: one line per swipe, with the bullets as a pager. --}}
+                <div x-data="snapRow" class="mt-10 lg:hidden" role="region" aria-roledescription="carousel" aria-label="Service lines">
+                    <div x-ref="row" class="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8">
+                        @foreach ($services as $i => $service)
+                            <x-line-panel
+                                :service="$service"
+                                role="group"
+                                aria-roledescription="slide"
+                                aria-label="{{ $i + 1 }} of {{ $services->count() }}: {{ $service->title }}"
+                                class="w-[88%] shrink-0 snap-start bg-panel p-5 sm:w-[75%] md:p-8"
+                            />
+                        @endforeach
+                    </div>
+                    <div class="mt-5 flex items-center justify-between gap-4">
+                        <div class="flex">
+                            @foreach ($services as $i => $service)
+                                <button type="button" @click="go({{ $i }})" class="grid h-11 w-11 place-items-center" :aria-current="index === {{ $i }}">
+                                    <span class="sr-only">Show {{ $service->title }}</span>
+                                    <span class="grid place-items-center rounded-full p-0.5 ring-2 transition-colors duration-150" :class="index === {{ $i }} ? 'ring-text' : 'ring-transparent'">
+                                        <x-bullet :line="$service->line" size="sm" />
+                                    </span>
+                                </button>
+                            @endforeach
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" @click="go(index - 1)" :disabled="index === 0" class="grid h-11 w-11 place-items-center ring-2 ring-inset ring-text disabled:opacity-30" aria-label="Previous line"><x-arrow dir="left" /></button>
+                            <button type="button" @click="go(index + 1)" :disabled="index === count - 1" class="grid h-11 w-11 place-items-center ring-2 ring-inset ring-text disabled:opacity-30" aria-label="Next line"><x-arrow /></button>
+                        </div>
+                    </div>
+                </div>
+            </x-container>
+        </section>
+
+        {{-- JOURNEYS: case studies as platform posters. --}}
+        @if ($featuredCaseStudies->isNotEmpty())
+            <section data-station="Journeys" class="py-16 md:py-28">
+                <x-container>
+                    <div class="relative">
+                        <span data-stop aria-hidden="true" class="{{ $sectionStop }}"></span>
+                        <x-sign>Journeys</x-sign>
+                    </div>
+                    <div class="mt-6 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+                        <p class="max-w-prose text-body-lg text-text-2">
+                            How an idea travels the line, from first call to launch.
+                            @if ($featuredCaseStudies->contains('is_sample', true))
+                                These are sample projects; real client work replaces them as it is cleared to publish.
                             @endif
-                            <p class="mt-4 text-heading-md font-semibold text-paper">{{ $project->title }}</p>
-                            <p class="mt-1 text-body-sm text-paper-dim">{{ $project->category }}</p>
-                        </a>
+                        </p>
+                        <x-button :href="route('work.index')" variant="ghost">All journeys</x-button>
+                    </div>
+
+                    <x-poster-row class="mt-10" :studies="$featuredCaseStudies" :line-by-service="$lineByService" />
+                </x-container>
+            </section>
+        @endif
+
+        {{-- FARES: the three plans as tickets. --}}
+        <section data-station="Fares" class="py-16 md:py-28">
+            <x-container>
+                <div class="relative">
+                    <span data-stop aria-hidden="true" class="{{ $sectionStop }}"></span>
+                    <x-sign>Fares</x-sign>
+                </div>
+                <p class="mt-6 max-w-prose text-body-lg text-text-2">Three ways to ride, from a first MVP to a full platform.</p>
+
+                {{-- Phones swipe between tickets; the hero board already lists all three fares. --}}
+                <div class="-mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:mt-12 md:block md:space-y-6 md:overflow-visible md:px-0">
+                    @foreach ($plans as $plan)
+                        <x-ticket class="w-[88%] shrink-0 snap-start md:w-auto" :name="$plan->name" :tagline="$plan->tagline" :price="$plan->price_range" :duration="$plan->timeline" :best-for="$plan->best_for">
+                            @if (! empty($plan->deliverables))
+                                <x-slot:deliverables>
+                                    <ul class="mt-6 hidden gap-x-8 gap-y-2 text-body-md text-text-2 md:grid md:grid-cols-2">
+                                        @foreach (array_slice($plan->deliverables, 0, 4) as $item)
+                                            <li class="flex gap-3"><span aria-hidden="true" class="mt-[0.6em] h-1.5 w-3 shrink-0 bg-text"></span>{{ $item }}</li>
+                                        @endforeach
+                                    </ul>
+                                </x-slot:deliverables>
+                            @endif
+                            <x-slot:action>
+                                <x-button :href="route('pricing')" variant="on-sign" size="sm">What's included</x-button>
+                            </x-slot:action>
+                        </x-ticket>
                     @endforeach
                 </div>
             </x-container>
         </section>
-    @endif
 
-    {{-- TESTIMONIAL --}}
-    @if ($testimonial)
-        <section class="border-t border-ink-800 py-24">
-            <x-container class="mx-auto max-w-3xl text-center">
-                <x-heroicon-s-chat-bubble-left-right class="mx-auto h-8 w-8 text-lime-500" />
-                <blockquote class="mt-6 text-heading-lg font-medium text-paper">
-                    &ldquo;{{ $testimonial->quote }}&rdquo;
-                </blockquote>
-                <p class="mt-6 text-body-sm text-paper-dim">
-                    — {{ $testimonial->author_name }}{{ $testimonial->author_title ? ', ' . $testimonial->author_title : '' }}{{ $testimonial->company ? ' of ' . $testimonial->company : '' }}
-                </p>
-            </x-container>
-        </section>
-    @endif
-
-    {{-- SERVICE TAG STRIP (confirmed tapline pattern: marquee directly above the footer CTA) --}}
-    <section class="border-t border-ink-800 py-6">
-        <x-marquee speed="22">
-            @foreach ($services->pluck('title') as $tag)
-                <span class="rounded-full border border-ink-700 px-4 py-2 text-body-sm text-paper-dim">{{ $tag }}</span>
-            @endforeach
-        </x-marquee>
-    </section>
-
-    {{-- FOOTER CTA --}}
-    <section class="relative overflow-hidden py-24">
-        {{-- Ambient floating dots, confirmed live on tapline.studio's equivalent CTA section (see app.css .float-dot) --}}
-        <span class="float-dot absolute left-[12%] top-[20%] h-1.5 w-1.5 rounded-full bg-lime-500/70" style="animation-delay:0s"></span>
-        <span class="float-dot absolute left-[20%] top-[65%] h-1.5 w-1.5 rounded-full bg-lime-500/50" style="animation-delay:0.6s"></span>
-        <span class="float-dot absolute left-[8%] top-[45%] h-1 w-1 rounded-full bg-paper/40" style="animation-delay:1.1s"></span>
-        <span class="float-dot absolute right-[10%] top-[25%] h-1.5 w-1.5 rounded-full bg-paper/40" style="animation-delay:0.3s"></span>
-        <span class="float-dot absolute right-[18%] top-[60%] h-1 w-1 rounded-full bg-lime-500/60" style="animation-delay:0.9s"></span>
-        <span class="float-dot absolute right-[7%] top-[42%] h-1.5 w-1.5 rounded-full bg-lime-500/40" style="animation-delay:1.4s"></span>
-
-        <x-container class="relative mx-auto max-w-2xl text-center">
-            <h2 class="text-display-md font-semibold text-paper">Let's Build Something Great Together</h2>
-            <p class="mt-4 text-body-lg text-paper-dim">
-                Ready to turn your idea into a digital product? We're here to listen, strategize, and bring your vision to life.
-            </p>
-            <div class="mt-8">
-                <x-button href="{{ route('contact') }}" variant="primary">Book Your Free Strategy Call Today</x-button>
-            </div>
-        </x-container>
-    </section>
+        {{-- PLAN YOUR JOURNEY: the end of the ride. --}}
+        <x-closing stop />
+    </div>
 </x-layout>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plexo — Dashboard (sample, before)</title>
+<style>
+  body { margin: 0; font: 11px Verdana, Geneva, sans-serif; color: #222; background: #DDE3EA; height: 100vh; overflow: hidden; }
+  .top { background: linear-gradient(#5B7FA6, #3E5F85); color: #fff; padding: 6px 10px; display: flex; align-items: center; gap: 14px; border-bottom: 2px solid #2B4666; }
+  .top b { font: bold 18px Georgia, serif; letter-spacing: 1px; }
+  .menu { background: linear-gradient(#F3F5F8, #D7DEE7); border-bottom: 1px solid #9FB0C4; padding: 4px 8px; display: flex; gap: 2px; }
+  .menu a { padding: 4px 9px; border: 1px solid transparent; color: #1F3F66; text-decoration: underline; }
+  .menu a.on { background: #fff; border-color: #9FB0C4; font-weight: bold; text-decoration: none; }
+  .wrap { display: grid; grid-template-columns: 190px 1fr 230px; gap: 8px; padding: 8px; }
+  .box { background: #fff; border: 1px solid #9FB0C4; }
+  .box h3 { margin: 0; padding: 4px 6px; font-size: 11px; background: linear-gradient(#EAF0F6, #C9D6E3); border-bottom: 1px solid #9FB0C4; color: #1F3F66; }
+  .box .in { padding: 6px; }
+  ul { margin: 0; padding-left: 14px; line-height: 1.7; }
+  a { color: #1A4FA0; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #C9D3DE; padding: 2px 4px; white-space: nowrap; }
+  th { background: #EEF2F6; text-align: left; }
+  tr:nth-child(even) td { background: #F7F9FB; }
+  .btn { display: inline-block; padding: 2px 8px; border: 1px solid #7C8EA3; background: linear-gradient(#FFFFFF, #D9E0E8); border-radius: 2px; color: #222; margin: 0 2px 4px 0; }
+  .warn { background: #FFF6C8; border: 1px solid #E0C44A; padding: 5px; margin-bottom: 6px; }
+  .kpi td { font-size: 13px; }
+  .bar { height: 12px; background: linear-gradient(#8FC0F0, #3B78C0); }
+</style>
+</head>
+<body>
+  <div class="top"><b>PLEXO</b> <span>Operations Management System v3.2.1</span> <span style="margin-left:auto">Logged in as: amara.r | <a style="color:#fff">My Account</a> | <a style="color:#fff">Help</a> | <a style="color:#fff">Logout</a></span></div>
+  <div class="menu"><a class="on">Dashboard</a><a>Orders</a><a>Orders (Legacy)</a><a>Workflows</a><a>Tickets</a><a>Inventory</a><a>Reports</a><a>Reports 2</a><a>Users</a><a>Admin</a><a>Settings</a><a>Tools</a></div>
+  <div class="wrap">
+    <div>
+      <div class="box"><h3>Quick Links</h3><div class="in"><ul><li><a>New Order</a></li><li><a>New Ticket</a></li><li><a>Import CSV</a></li><li><a>Export Data</a></li><li><a>Print Labels</a></li><li><a>Run Report</a></li><li><a>User Admin</a></li><li><a>Change Password</a></li></ul></div></div>
+      <div class="box" style="margin-top:8px"><h3>Filters</h3><div class="in">Hub: <select><option>All</option></select><br><br>Status: <select><option>All</option></select><br><br>Date from: <input size="8" value="01/03/2021"><br><br>Date to: <input size="8" value="31/03/2021"><br><br><span class="btn">Apply</span><span class="btn">Reset</span></div></div>
+    </div>
+    <div>
+      <div class="warn"><b>Notice:</b> Scheduled maintenance Sunday 02:00-06:00. Reports 2 module is deprecated, please use Reports. Unsaved data will be lost.</div>
+      <div class="box"><h3>Summary</h3><div class="in">
+        <table class="kpi"><tr><th>Orders</th><th>Fulfilled</th><th>Pending</th><th>Returns</th><th>Tickets</th><th>SLA %</th><th>Avg Resp (min)</th></tr><tr><td>13,209</td><td>12,480</td><td>729</td><td>212</td><td>38</td><td>97.4</td><td>72</td></tr></table>
+      </div></div>
+      <div class="box" style="margin-top:8px"><h3>Orders by Week</h3><div class="in">
+        <table><tr><td>Week 1</td><td style="width:80%"><div class="bar" style="width:62%"></div></td><td>2,914</td></tr><tr><td>Week 2</td><td><div class="bar" style="width:74%"></div></td><td>3,106</td></tr><tr><td>Week 3</td><td><div class="bar" style="width:69%"></div></td><td>3,021</td></tr><tr><td>Week 4</td><td><div class="bar" style="width:88%"></div></td><td>3,439</td></tr></table>
+      </div></div>
+      <div class="box" style="margin-top:8px"><h3>Workflows (showing 1-12 of 57)</h3><div class="in">
+        <span class="btn">Export</span><span class="btn">Print</span><span class="btn">Refresh</span><span class="btn">Edit Columns</span><span class="btn">Bulk Update</span><span class="btn">Delete</span>
+        <table>
+          <tr><th><input type="checkbox"></th><th>ID</th><th>Workflow Name</th><th>Owner</th><th>Hub</th><th>Stage</th><th>Created</th><th>Due</th><th>Priority</th><th>Status</th><th>Last Upd.</th><th>Actions</th></tr>
+          <tr><td><input type="checkbox"></td><td>10442</td><td>Same-day dispatch North</td><td>amara.r</td><td>NTH</td><td>PICK</td><td>03/03/21</td><td>03/03/21</td><td>1</td><td>OK</td><td>08:05</td><td><a>Edit</a> <a>Del</a></td></tr>
+          <tr><td><input type="checkbox"></td><td>10441</td><td>Returns triage</td><td>theo.k</td><td>STH</td><td>REV</td><td>02/03/21</td><td>04/03/21</td><td>2</td><td>RISK</td><td>07:51</td><td><a>Edit</a> <a>Del</a></td></tr>
+          <tr><td><input type="checkbox"></td><td>10437</td><td>Weekly restock A</td><td>lena.m</td><td>NTH</td><td>PLAN</td><td>01/03/21</td><td>08/03/21</td><td>3</td><td>OK</td><td>Yest.</td><td><a>Edit</a> <a>Del</a></td></tr>
+          <tr><td><input type="checkbox"></td><td>10436</td><td>Courier audit</td><td>sam.o</td><td>ALL</td><td>OPEN</td><td>01/03/21</td><td>12/03/21</td><td>3</td><td>OK</td><td>Yest.</td><td><a>Edit</a> <a>Del</a></td></tr>
+          <tr><td><input type="checkbox"></td><td>10430</td><td>Damaged goods claims</td><td>theo.k</td><td>STH</td><td>OPEN</td><td>27/02/21</td><td>05/03/21</td><td>2</td><td>LATE</td><td>26/02</td><td><a>Edit</a> <a>Del</a></td></tr>
+          <tr><td><input type="checkbox"></td><td>10428</td><td>Holiday staffing</td><td>amara.r</td><td>ALL</td><td>PLAN</td><td>26/02/21</td><td>20/03/21</td><td>4</td><td>OK</td><td>25/02</td><td><a>Edit</a> <a>Del</a></td></tr>
+        </table>
+        <p>&laquo; Prev | Page <b>1</b> 2 3 4 5 | Next &raquo;</p>
+      </div></div>
+    </div>
+    <div>
+      <div class="box"><h3>Messages (14 unread)</h3><div class="in"><ul><li><a>RE: RE: dispatch cutoff</a></li><li><a>Password expires in 3 days</a></li><li><a>New report available</a></li><li><a>FW: courier rates Q2</a></li></ul></div></div>
+      <div class="box" style="margin-top:8px"><h3>Team Status</h3><div class="in"><table><tr><td>Dispatch</td><td>82%</td></tr><tr><td>Warehouse</td><td>64%</td></tr><tr><td>Support</td><td>71%</td></tr><tr><td>Returns</td><td>38%</td></tr></table></div></div>
+      <div class="box" style="margin-top:8px"><h3>Getting Started</h3><div class="in">To set up your account please see the <a>Admin Guide (PDF, 4.2MB)</a> or contact your system administrator.</div></div>
+    </div>
+  </div>
+</body>
+</html>

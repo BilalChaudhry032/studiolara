@@ -2,42 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Archivo, self-hosted (SIL OFL, see resources/fonts/OFL-Archivo.txt). One
+   variable file per subset carries both axes: weight 100–900, width 62–125%. */
+@font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    font-display: swap;
+    src: url('../fonts/archivo-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    font-display: swap;
+    src: url('../fonts/archivo-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @layer base {
     html {
-        @apply scroll-smooth;
+        scrollbar-color: rgb(var(--text-3)) rgb(var(--ground));
     }
 
     body {
-        @apply bg-ink-950 text-paper font-sans antialiased;
+        @apply bg-ground font-sans text-text antialiased;
+        caret-color: rgb(var(--line-u));
     }
 
+    /* Platform yellow, the one colour that reads as "selected" in both themes. */
     ::selection {
-        @apply bg-lime-500 text-ink-950;
+        background: rgb(var(--line-m));
+        color: rgb(var(--line-m-ink));
     }
 
     :focus-visible {
-        @apply outline-none ring-2 ring-lime-500 ring-offset-2 ring-offset-ink-950;
+        outline: 3px solid rgb(var(--focus));
+        outline-offset: 2px;
+    }
+
+    a {
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 2px;
     }
 
     [x-cloak] {
         display: none !important;
     }
 
-    /* Ambient background glow behind every section (see .bg-glow-section
-       below in this file), applied globally rather than per-page so the
-       whole site picks it up automatically, current and future sections
-       alike. `z-index: 0` (not just `position: relative`) is required, not
-       decorative - it makes the section its own stacking context so the
-       glow's `z-index: -1` is contained behind THIS section's content
-       without bleeding behind a different section in the page. */
-    section {
-        position: relative;
-        z-index: 0;
+    /* Required by Lenis (desktop smooth scroll, see resources/js/motion.js). */
+    html.lenis,
+    html.lenis body {
+        height: auto;
+    }
+
+    .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-stopped {
         overflow: hidden;
     }
 
-    /* Hard requirement, not optional polish: every animation utility in this
-       project must check this before running. See resources/js/motion.js. */
+    /* Safety net under the per-effect reduced-motion paths in motion.js:
+       anything CSS-animated finishes instantly, so state still changes but
+       nothing travels. */
     @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -50,126 +83,70 @@
     }
 }
 
-@keyframes marquee-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+/* Starting states for authored entrances, applied only while html.motion is
+   set (motion allowed, app running; see the head script in layout.blade.php).
+   The hero drawing waits for hero.js; a [data-line-in] line waits to be
+   revealed along its direction as it scrolls into view (journey.js). */
+.motion [data-hero-map] {
+    visibility: hidden;
 }
 
-@keyframes marquee-right {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
+.motion [data-line-in='x'] {
+    clip-path: inset(0 100% 0 0);
 }
 
-/* Ambient floating dots (confirmed live on tapline.studio's footer CTA - 7
-   small particles continuously bobbing via a JS loop, independent of hover
-   or scroll). Pure CSS here since there's nothing to trigger: the global
-   prefers-reduced-motion override above already neutralizes this. */
-@keyframes float-dot {
-    0%, 100% { transform: translateY(-6px); }
-    50% { transform: translateY(6px); }
+.motion [data-line-in='y'] {
+    clip-path: inset(0 0 100% 0);
 }
 
-.float-dot {
-    animation: float-dot 3.2s ease-in-out infinite;
+@layer utilities {
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
 }
 
-/* Ambient section-background glow, inspired by the soft blurred color blobs
-   confirmed live behind tapline.studio's sections - reimplemented with our
-   own multi-color mix (lime/blue/violet, not their purple/orange) since the
-   brand is meant to be distinct, not a copy. Pure CSS pseudo-elements on
-   every <section> (see the base `section` rule above) so it applies
-   site-wide with zero per-page markup. Each blob is itself a two-color
-   gradient (not a flat tint), and the pairing cycles every 3 sections via
-   :nth-of-type so a long page shows real color variety instead of repeating
-   the same lime wash down the whole scroll. */
-section::before,
-section::after {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    width: 34rem;
-    height: 34rem;
-    border-radius: 9999px;
-    filter: blur(120px);
-    pointer-events: none;
-}
+@layer components {
+    /* One split-flap tile (see resources/js/split-flap.js), with the hairline
+       split across its middle. --flap lifts at night so tiles read on panels. */
+    .flap {
+        position: relative;
+        display: inline-grid;
+        place-items: center;
+        width: 0.7em;
+        height: 1.25em;
+        border-radius: 2px;
+        background: rgb(var(--flap));
+        color: rgb(var(--sign-ink));
+        font-weight: 700;
+        font-stretch: 75%;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        white-space: pre;
+    }
 
-section::before {
-    top: -11rem;
-    left: -11rem;
-    background: radial-gradient(circle, rgba(215, 255, 63, 0.16) 0%, rgba(77, 163, 255, 0.08) 55%, transparent 78%);
-    animation: glow-drift-a 18s ease-in-out infinite;
-}
+    /* System map (services index): while one line is hovered or focused,
+       the others step back. Only the drawing fades (the line and its
+       markers); words drop to text-3, which still passes AA. */
+    .system-map ol::before,
+    .system-map ol [aria-hidden='true'] {
+        transition: opacity 300ms;
+    }
 
-section::after {
-    bottom: -11rem;
-    right: -11rem;
-    background: radial-gradient(circle, rgba(177, 92, 255, 0.14) 0%, rgba(215, 255, 63, 0.06) 55%, transparent 78%);
-    animation: glow-drift-b 22s ease-in-out infinite;
-}
+    .system-map:has(> li:is(:hover, :focus-within)) > li:not(:hover, :focus-within) ol::before,
+    .system-map:has(> li:is(:hover, :focus-within)) > li:not(:hover, :focus-within) ol [aria-hidden='true'] {
+        opacity: 0.2;
+    }
 
-section:nth-of-type(3n+1)::before {
-    left: auto;
-    right: -11rem;
-}
+    .system-map:has(> li:is(:hover, :focus-within)) > li:not(:hover, :focus-within) :is(.map-text, ol) {
+        color: rgb(var(--text-3));
+    }
 
-section:nth-of-type(3n+1)::after {
-    right: auto;
-    left: -11rem;
-}
-
-section:nth-of-type(3n+2)::before {
-    background: radial-gradient(circle, rgba(77, 163, 255, 0.16) 0%, rgba(177, 92, 255, 0.08) 55%, transparent 78%);
-}
-
-section:nth-of-type(3n+2)::after {
-    background: radial-gradient(circle, rgba(215, 255, 63, 0.13) 0%, rgba(77, 163, 255, 0.06) 55%, transparent 78%);
-}
-
-section:nth-of-type(3n)::before {
-    background: radial-gradient(circle, rgba(177, 92, 255, 0.15) 0%, rgba(215, 255, 63, 0.07) 55%, transparent 78%);
-}
-
-section:nth-of-type(3n)::after {
-    background: radial-gradient(circle, rgba(77, 163, 255, 0.13) 0%, rgba(177, 92, 255, 0.06) 55%, transparent 78%);
-}
-
-@keyframes glow-drift-a {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(3rem, -2.5rem); }
-}
-
-@keyframes glow-drift-b {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(-3rem, 2.5rem); }
-}
-
-/* Continuously-moving element, distinct from the blobs' slow back-and-forth
-   drift above: a faint dot-field texture that scrolls in one direction on
-   an infinite loop (one tile's worth per cycle, so it repeats seamlessly).
-   Kept very low-opacity - it's a texture, not the focal decoration - so it
-   doesn't fight for attention on text-dense sections like pricing or FAQs. */
-section {
-    background-image: radial-gradient(rgba(245, 245, 240, 0.05) 1px, transparent 1.5px);
-    background-size: 46px 46px;
-    animation: dot-field-drift 50s linear infinite;
-}
-
-@keyframes dot-field-drift {
-    from { background-position: 0 0; }
-    to { background-position: 46px 46px; }
-}
-
-/* Scroll-reveal starting state — see resources/js/motion.js. Applied via
-   class so content is visible by default (progressive enhancement: no JS,
-   no prefers-reduced-motion support == content just shows, never hidden). */
-[data-reveal] {
-    opacity: 0;
-    transform: translateY(24px);
-}
-
-[data-reveal].is-revealed {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    .flap::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        top: 50%;
+        height: 1px;
+        background: rgb(var(--ground) / 0.3);
+    }
 }

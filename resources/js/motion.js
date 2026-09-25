@@ -4,145 +4,72 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const finePointer = window.matchMedia('(pointer: fine)');
 
 /**
- * Smooth (inertia) scroll. Skipped entirely under prefers-reduced-motion —
- * this is exactly the kind of motion that spec is meant to suppress, and
- * native scroll is the correct fallback, not a slowed-down version of Lenis.
+ * Every effect checks this before it moves anything. It is read live, so
+ * switching the OS setting mid-visit takes effect without a reload.
  */
-function initSmoothScroll() {
-    if (prefersReducedMotion) return;
+export const reducedMotion = () => reducedQuery.matches;
 
-    const lenis = new Lenis();
+/**
+ * One clock for the whole site. GSAP's ticker drives Lenis and every tween,
+ * so scroll-linked effects (the train on the spine, station arrivals) never
+ * drift apart from the scroll position they describe.
+ */
+export const clock = gsap.ticker;
 
-    lenis.on('scroll', ScrollTrigger.update);
+let lenis = null;
+const lenisFrame = (time) => lenis?.raf(time * 1000);
 
-    gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
+/**
+ * Inertia scroll only for a mouse or trackpad, and only when motion is
+ * allowed. Touch devices keep native scrolling, which is already smooth and
+ * which people expect to feel exactly like every other site.
+ */
+function syncSmoothScroll() {
+    const wanted = !reducedMotion() && finePointer.matches;
+
+    if (wanted && !lenis) {
+        lenis = new Lenis();
+        lenis.on('scroll', ScrollTrigger.update);
+        clock.add(lenisFrame);
+    } else if (!wanted && lenis) {
+        clock.remove(lenisFrame);
+        lenis.destroy();
+        lenis = null;
+    }
 }
 
 /**
- * Scroll-triggered fade/slide-up entrance for anything marked data-reveal
- * (section headings, grid cards, process steps, FAQ items - see app.css for
- * the actual opacity/transform values). Under prefers-reduced-motion, skip
- * ScrollTrigger entirely and just reveal everything immediately - content
- * must never be permanently hidden for a user who can't trigger the reveal.
+ * Walkthrough videos (x-video): play while at least half in view, pause
+ * when scrolled away or when the tab is hidden. Nothing starts on its own
+ * under reduced motion, and a visitor's own pause (data-user-paused) holds.
  */
-function initScrollReveals() {
-    const targets = gsap.utils.toArray('[data-reveal]');
+function initVideos() {
+    const videos = [...document.querySelectorAll('video[data-autoplay]')];
+    if (!videos.length) return;
 
-    if (prefersReducedMotion) {
-        targets.forEach((el) => el.classList.add('is-revealed'));
-        return;
-    }
-
-    targets.forEach((el, index) => {
-        ScrollTrigger.create({
-            trigger: el,
-            start: 'top 85%',
-            once: true,
-            onEnter: () => {
-                // Small stagger for elements already grouped in a grid/row
-                // (e.g. cards revealing left-to-right) without needing a
-                // separate stagger timeline per section.
-                const delay = Math.min(index % 4, 3) * 0.08;
-                setTimeout(() => el.classList.add('is-revealed'), delay * 1000);
-            },
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+            if (isIntersecting && !reducedMotion() && !target.dataset.userPaused && !document.hidden) {
+                target.play().catch(() => {});
+            } else if (!isIntersecting) {
+                target.pause();
+            }
         });
+    }, { threshold: 0.5 });
+
+    videos.forEach((video) => observer.observe(video));
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) videos.forEach((video) => video.pause());
     });
 }
 
 export function initMotion() {
-    initSmoothScroll();
-    initScrollReveals();
-}
-
-/**
- * Odometer/slot-machine-style stat counter: digits scramble through random
- * values, then settle on the exact target as the scroll-triggered tween
- * approaches completion - not a plain linear count-up. Registered as an
- * Alpine component so the Blade side just declares target/suffix/duration.
- */
-export function registerAlpineMotionComponents(Alpine) {
-    Alpine.data('statCounter', (target, duration = 1.4) => ({
-        display: 0,
-        started: false,
-
-        observe(el) {
-            if (prefersReducedMotion) {
-                this.display = target;
-                return;
-            }
-
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting && !this.started) {
-                            this.started = true;
-                            this.run();
-                        }
-                    });
-                },
-                { threshold: 0.4 },
-            );
-
-            observer.observe(el);
-        },
-
-        run() {
-            const proxy = { value: 0 };
-
-            gsap.to(proxy, {
-                value: target,
-                duration,
-                ease: 'power2.out',
-                onUpdate: () => {
-                    const progress = target === 0 ? 1 : proxy.value / target;
-                    this.display = progress < 0.95
-                        ? Math.floor(Math.random() * (target + 1))
-                        : Math.round(proxy.value);
-                },
-                onComplete: () => {
-                    this.display = target;
-                },
-            });
-        },
-    }));
-
-    /**
-     * Mouse-tracking 3D tilt, confirmed live on tapline.studio's value-prop
-     * card row (rotateX/rotateY driven by cursor position inside the card,
-     * springing back to 0 on mouseleave - a continuous "mouse move" trigger,
-     * not a discrete hover state). Skipped under prefers-reduced-motion and
-     * on coarse/touch pointers, where there's no cursor to track.
-     */
-    Alpine.data('tiltCard', (maxTilt = 8) => ({
-        active: !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches,
-        quickX: null,
-        quickY: null,
-
-        init() {
-            if (!this.active) return;
-            this.quickX = gsap.quickTo(this.$el, 'rotationY', { duration: 0.4, ease: 'power3.out' });
-            this.quickY = gsap.quickTo(this.$el, 'rotationX', { duration: 0.4, ease: 'power3.out' });
-        },
-
-        onMove(event) {
-            if (!this.active) return;
-            const rect = this.$el.getBoundingClientRect();
-            const px = (event.clientX - rect.left) / rect.width - 0.5;
-            const py = (event.clientY - rect.top) / rect.height - 0.5;
-            this.quickX(px * maxTilt * 2);
-            this.quickY(py * -maxTilt * 2);
-        },
-
-        onLeave() {
-            if (!this.active) return;
-            this.quickX(0);
-            this.quickY(0);
-        },
-    }));
+    clock.lagSmoothing(0);
+    syncSmoothScroll();
+    reducedQuery.addEventListener('change', syncSmoothScroll);
+    initVideos();
 }

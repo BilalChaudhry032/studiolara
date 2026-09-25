@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sample cover</title>
+<style>
+  html, body { margin: 0; width: 1200px; height: 1500px; overflow: hidden; }
+  .shot { position: absolute; border-radius: 22px; box-shadow: 0 50px 100px rgba(0,0,0,.35); }
+  .phone { position: absolute; width: 390px; height: 844px; border-radius: 52px; overflow: hidden; box-shadow: 0 0 0 12px #0B1A15, 0 50px 100px rgba(0,0,0,.35); }
+  .phone img { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<script>
+  // Captures are written to ./captures by the capture script (docs/asset-sources.md).
+  const p = new URLSearchParams(location.search).get('p');
+  const covers = {
+    saas: { bg: '#0F2A24', html: '<img class="shot" src="captures/saas-after.png" style="left:150px;top:260px;width:1500px">' },
+    store: { bg: '#D96C47', html: '<img class="shot" src="captures/store-after.png" style="left:150px;top:260px;width:1500px">' },
+    booking: { bg: '#163A2F', html: '<div class="phone" style="left:150px;top:330px"><img src="captures/booking-after-1.png"></div><div class="phone" style="left:640px;top:200px"><img src="captures/booking-after-2.png"></div>' },
+  };
+  document.body.style.background = covers[p].bg;
+  document.body.innerHTML += covers[p].html;
+</script>
+</body>
+</html>

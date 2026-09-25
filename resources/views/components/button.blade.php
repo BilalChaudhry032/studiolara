@@ -1,41 +1,38 @@
 @props([
     'href' => null,
-    'variant' => 'primary', // primary | outline | ghost
+    'variant' => 'primary', // primary | outline | ghost | on-sign (outline for use on sign bands)
+    'arrow' => true,
+    'size' => 'md', // sm | md
 ])
 
 @php
-    $base = 'group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 text-body-sm font-medium transition-colors duration-300 ease-out-expo';
+    $base = 'group inline-flex min-h-11 items-center justify-center gap-3 font-semibold stretch-semi transition-colors duration-150 active:translate-y-px';
+    $pad = $variant === 'ghost' ? 'py-2' : ($size === 'sm' ? 'px-4 py-2' : 'px-5 py-3');
 
+    // Primary is a sign: solid, square, with an arrow. On hover it inverts
+    // and keeps its shape through the inset ring.
     $variants = [
-        'primary' => 'bg-lime-500 text-ink-950 hover:bg-lime-600',
-        'outline' => 'border border-ink-600 text-paper hover:border-lime-500 hover:text-lime-500',
-        'ghost' => 'text-paper hover:text-lime-500',
+        'primary' => 'bg-action text-action-ink ring-2 ring-inset ring-action hover:bg-ground hover:text-text',
+        'outline' => 'text-text ring-2 ring-inset ring-text hover:bg-action hover:text-action-ink',
+        'ghost' => 'text-text underline decoration-text/40 decoration-2 underline-offset-[0.35em] hover:decoration-text',
+        'on-sign' => 'text-sign-ink ring-2 ring-inset ring-sign-ink hover:bg-sign-ink hover:text-sign',
     ];
 
-    $classes = $base . ' ' . ($variants[$variant] ?? $variants['primary']);
-
-    // Soft gradient glow that fades in behind the label on hover - confirmed
-    // live on tapline.studio's outline CTA button (a `.second-button-hover`
-    // sibling panel revealed via opacity), ported here with our lime accent
-    // instead of their violet/red. Only the outline variant gets it: the
-    // primary button's hover is already a full background-color invert and
-    // doesn't need an added glow (matches tapline's own button-one, which
-    // only carries this on its secondary/outline style).
-    $glow = $variant === 'outline';
+    $classes = implode(' ', [$base, $pad, $size === 'sm' ? 'text-body-sm' : 'text-body-md', $variants[$variant] ?? $variants['primary']]);
 @endphp
 
 @if ($href)
     <a href="{{ $href }}" {{ $attributes->merge(['class' => $classes]) }}>
-        @if ($glow)
-            <span aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 [background:radial-gradient(120%_140%_at_50%_50%,theme(colors.lime.500/20%),transparent_70%)]"></span>
+        <span>{{ $slot }}</span>
+        @if ($arrow)
+            <x-arrow class="transition-transform duration-150 ease-out-expo group-hover:translate-x-1" />
         @endif
-        {{ $slot }}
     </a>
 @else
-    <button {{ $attributes->merge(['type' => 'button', 'class' => $classes]) }}>
-        @if ($glow)
-            <span aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 [background:radial-gradient(120%_140%_at_50%_50%,theme(colors.lime.500/20%),transparent_70%)]"></span>
+    <button {{ $attributes->merge(['type' => 'button', 'class' => $classes . ' disabled:pointer-events-none disabled:opacity-40']) }}>
+        <span>{{ $slot }}</span>
+        @if ($arrow)
+            <x-arrow class="transition-transform duration-150 ease-out-expo group-hover:translate-x-1" />
         @endif
-        {{ $slot }}
     </button>
 @endif

@@ -12,11 +12,16 @@ class Testimonial extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
+        'is_sample',
         'quote',
         'author_name',
         'author_title',
         'company',
         'sort_order',
+    ];
+
+    protected $casts = [
+        'is_sample' => 'boolean',
     ];
 
     public function registerMediaCollections(): void

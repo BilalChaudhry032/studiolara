@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plexo Ops — Overview (sample)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Manrope', system-ui, sans-serif; }
+  .chart path { transition: d 600ms cubic-bezier(.16,1,.3,1); }
+  .drawer { transition: transform 450ms cubic-bezier(.16,1,.3,1); }
+</style>
+</head>
+<body class="h-screen overflow-hidden bg-[#F4F6F5] text-[#0F1F1B] antialiased">
+<div class="flex h-full">
+  <!-- Sidebar -->
+  <aside class="flex w-60 shrink-0 flex-col bg-[#0F2A24] px-4 py-5 text-[#CFE3DC]">
+    <div class="flex items-center gap-2.5 px-2">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-[#3DDC97] text-[15px] font-extrabold text-[#0F2A24]">P</span>
+      <span class="text-[17px] font-extrabold tracking-tight text-white">Plexo Ops</span>
+    </div>
+    <button class="mt-6 flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 text-left text-[13px]">
+      <span><span class="block text-[11px] text-[#8FB3A8]">Workspace</span>Northfield Logistics</span>
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M6 8l4 4 4-4"/></svg>
+    </button>
+    <nav class="mt-6 space-y-1 text-[14px] font-semibold">
+      <a class="flex items-center gap-3 rounded-lg bg-[#3DDC97]/15 px-3 py-2.5 text-white"><span class="h-2 w-2 rounded-full bg-[#3DDC97]"></span>Overview</a>
+      <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-white/5"><span class="h-2 w-2 rounded-full bg-[#8FB3A8]/50"></span>Workflows</a>
+      <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-white/5"><span class="h-2 w-2 rounded-full bg-[#8FB3A8]/50"></span>Orders</a>
+      <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-white/5"><span class="h-2 w-2 rounded-full bg-[#8FB3A8]/50"></span>Tickets <span class="ml-auto rounded-full bg-[#FF8A5B] px-2 text-[11px] font-bold text-[#0F2A24]">38</span></a>
+      <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-white/5"><span class="h-2 w-2 rounded-full bg-[#8FB3A8]/50"></span>Team</a>
+      <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-white/5"><span class="h-2 w-2 rounded-full bg-[#8FB3A8]/50"></span>Reports</a>
+    </nav>
+    <div class="mt-auto rounded-xl bg-white/5 p-4 text-[13px]">
+      <p class="font-bold text-white">Setup 3 of 4 done</p>
+      <div class="mt-2 h-1.5 rounded-full bg-white/10"><div class="h-full w-3/4 rounded-full bg-[#3DDC97]"></div></div>
+      <p class="mt-2 text-[#8FB3A8]">Invite your team to finish.</p>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="relative flex min-w-0 flex-1 flex-col">
+    <header class="flex h-16 shrink-0 items-center gap-4 border-b border-[#E1E7E4] bg-white px-8">
+      <div class="flex h-10 w-80 items-center gap-2 rounded-lg bg-[#F4F6F5] px-3 text-[14px] text-[#6B7F79]">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+        Search orders, workflows, people
+      </div>
+      <div class="ml-auto flex rounded-lg bg-[#F4F6F5] p-1 text-[13px] font-bold" id="ranges">
+        <button data-range="7" class="rounded-md px-3 py-1.5 text-[#6B7F79]">7 days</button>
+        <button data-range="30" class="rounded-md bg-white px-3 py-1.5 shadow-sm">30 days</button>
+        <button data-range="90" class="rounded-md px-3 py-1.5 text-[#6B7F79]">90 days</button>
+      </div>
+      <span class="grid h-10 w-10 place-items-center rounded-full bg-[#FFD9C7] text-[14px] font-bold text-[#8A3A1A]">AR</span>
+    </header>
+
+    <div class="flex-1 overflow-hidden p-8">
+      <div class="flex items-end justify-between">
+        <div>
+          <h1 class="text-[28px] font-extrabold tracking-tight">Operations overview</h1>
+          <p class="mt-1 text-[14px] text-[#6B7F79]">Everything moving through Northfield today, in one place.</p>
+        </div>
+        <button class="rounded-lg bg-[#0F2A24] px-4 py-2.5 text-[14px] font-bold text-white">New workflow</button>
+      </div>
+
+      <div class="mt-6 grid grid-cols-4 gap-4">
+        <div class="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(15,31,27,.06)]"><p class="text-[13px] font-semibold text-[#6B7F79]">Orders fulfilled</p><p class="mt-2 text-[30px] font-extrabold tracking-tight">12,480</p><p class="mt-1 text-[13px] font-bold text-[#138A5B]">▲ 8.2% vs last period</p></div>
+        <div class="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(15,31,27,.06)]"><p class="text-[13px] font-semibold text-[#6B7F79]">Avg. first response</p><p class="mt-2 text-[30px] font-extrabold tracking-tight">1h 12m</p><p class="mt-1 text-[13px] font-bold text-[#138A5B]">▼ 18 min faster</p></div>
+        <div class="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(15,31,27,.06)]"><p class="text-[13px] font-semibold text-[#6B7F79]">SLA met</p><p class="mt-2 text-[30px] font-extrabold tracking-tight">97.4%</p><p class="mt-1 text-[13px] font-bold text-[#6B7F79]">Target 95%</p></div>
+        <div class="rounded-2xl bg-[#0F2A24] p-5 text-white"><p class="text-[13px] font-semibold text-[#8FB3A8]">Open tickets</p><p class="mt-2 text-[30px] font-extrabold tracking-tight">38</p><p class="mt-1 text-[13px] font-bold text-[#FF8A5B]">6 need attention</p></div>
+      </div>
+
+      <div class="mt-4 grid grid-cols-3 gap-4">
+        <div class="col-span-2 rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(15,31,27,.06)]">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[16px] font-extrabold">Throughput</h2>
+            <div class="flex gap-4 text-[12px] font-bold"><span class="flex items-center gap-1.5"><i class="h-2.5 w-2.5 rounded-full bg-[#3DDC97]"></i>Fulfilled</span><span class="flex items-center gap-1.5"><i class="h-2.5 w-2.5 rounded-full bg-[#FF8A5B]"></i>Returned</span></div>
+          </div>
+          <svg class="chart mt-4 h-[210px] w-full" viewBox="0 0 700 210" preserveAspectRatio="none">
+            <g stroke="#EEF2F0" stroke-width="1"><path d="M0 52H700M0 104H700M0 156H700"/></g>
+            <path id="area" fill="#3DDC97" fill-opacity=".18" d="M0 150 C80 120 140 140 210 100 S330 60 420 80 S560 40 700 30 V210 H0Z"/>
+            <path id="line" fill="none" stroke="#1FB57C" stroke-width="3" d="M0 150 C80 120 140 140 210 100 S330 60 420 80 S560 40 700 30"/>
+            <path id="line2" fill="none" stroke="#FF8A5B" stroke-width="3" stroke-dasharray="6 6" d="M0 190 C90 180 160 186 240 176 S380 170 460 172 S600 162 700 164"/>
+          </svg>
+          <div class="mt-2 flex justify-between text-[12px] font-semibold text-[#9AAEA8]"><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span></div>
+        </div>
+        <div class="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(15,31,27,.06)]">
+          <h2 class="text-[16px] font-extrabold">Team load</h2>
+          <div class="mt-5 space-y-4 text-[13px] font-semibold">
+            <div><div class="flex justify-between"><span>Dispatch</span><span class="text-[#6B7F79]">82%</span></div><div class="mt-1.5 h-2 rounded-full bg-[#EEF2F0]"><div class="h-full w-[82%] rounded-full bg-[#FF8A5B]"></div></div></div>
+            <div><div class="flex justify-between"><span>Warehouse</span><span class="text-[#6B7F79]">64%</span></div><div class="mt-1.5 h-2 rounded-full bg-[#EEF2F0]"><div class="h-full w-[64%] rounded-full bg-[#3DDC97]"></div></div></div>
+            <div><div class="flex justify-between"><span>Support</span><span class="text-[#6B7F79]">71%</span></div><div class="mt-1.5 h-2 rounded-full bg-[#EEF2F0]"><div class="h-full w-[71%] rounded-full bg-[#3DDC97]"></div></div></div>
+            <div><div class="flex justify-between"><span>Returns</span><span class="text-[#6B7F79]">38%</span></div><div class="mt-1.5 h-2 rounded-full bg-[#EEF2F0]"><div class="h-full w-[38%] rounded-full bg-[#3DDC97]"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(15,31,27,.06)]">
+        <div class="flex items-center justify-between"><h2 class="text-[16px] font-extrabold">Active workflows</h2><span class="text-[13px] font-bold text-[#1FB57C]">View all</span></div>
+        <table class="mt-3 w-full text-left text-[14px]">
+          <thead class="text-[12px] font-bold uppercase tracking-wide text-[#9AAEA8]"><tr><th class="py-2">Workflow</th><th>Owner</th><th>Stage</th><th>Due</th><th class="text-right">Status</th></tr></thead>
+          <tbody class="font-semibold" id="rows">
+            <tr class="cursor-pointer border-t border-[#EEF2F0] hover:bg-[#F4F6F5]"><td class="py-3">Same-day dispatch, North hub</td><td>Amara R.</td><td>Picking</td><td>Today</td><td class="text-right"><span class="rounded-full bg-[#DDF7EC] px-2.5 py-1 text-[12px] text-[#138A5B]">On track</span></td></tr>
+            <tr class="cursor-pointer border-t border-[#EEF2F0] hover:bg-[#F4F6F5]"><td class="py-3">Returns triage</td><td>Theo K.</td><td>Review</td><td>Tomorrow</td><td class="text-right"><span class="rounded-full bg-[#FFE7DC] px-2.5 py-1 text-[12px] text-[#B4471D]">At risk</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Detail drawer (opened in the walkthrough) -->
+    <aside id="drawer" class="drawer absolute inset-y-0 right-0 w-[420px] translate-x-full border-l border-[#E1E7E4] bg-white p-7 shadow-[-24px_0_48px_rgba(15,31,27,.10)]">
+      <p class="text-[12px] font-bold uppercase tracking-wide text-[#9AAEA8]">Workflow</p>
+      <h3 class="mt-1 text-[22px] font-extrabold">Same-day dispatch, North hub</h3>
+      <div class="mt-5 space-y-3 text-[14px] font-semibold">
+        <div class="flex items-center gap-3 rounded-xl bg-[#DDF7EC] p-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#1FB57C] text-white">✓</span>Order received · 08:02</div>
+        <div class="flex items-center gap-3 rounded-xl bg-[#DDF7EC] p-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#1FB57C] text-white">✓</span>Stock reserved · 08:05</div>
+        <div class="flex items-center gap-3 rounded-xl border-2 border-[#1FB57C] p-3"><span class="grid h-7 w-7 place-items-center rounded-full border-2 border-[#1FB57C] text-[#1FB57C]">3</span>Picking · 64 of 90 items</div>
+        <div class="flex items-center gap-3 rounded-xl bg-[#F4F6F5] p-3 text-[#6B7F79]"><span class="grid h-7 w-7 place-items-center rounded-full bg-white">4</span>Courier handover</div>
+      </div>
+      <button class="mt-6 w-full rounded-lg bg-[#0F2A24] py-3 text-[14px] font-bold text-white">Message the hub</button>
+    </aside>
+  </main>
+</div>
+<script>
+  const shapes = {
+    7:  ['M0 120 C80 110 140 90 210 96 S330 70 420 62 S560 58 700 44', 'M0 186 C90 184 160 180 240 182 S380 176 460 178 S600 170 700 172'],
+    30: ['M0 150 C80 120 140 140 210 100 S330 60 420 80 S560 40 700 30', 'M0 190 C90 180 160 186 240 176 S380 170 460 172 S600 162 700 164'],
+    90: ['M0 170 C80 160 140 150 210 130 S330 110 420 90 S560 70 700 50', 'M0 184 C90 186 160 178 240 180 S380 174 460 168 S600 170 700 160'],
+  };
+  document.querySelectorAll('#ranges button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('#ranges button').forEach((x) => x.className = 'rounded-md px-3 py-1.5 text-[#6B7F79]');
+    b.className = 'rounded-md bg-white px-3 py-1.5 shadow-sm';
+    const [a, r] = shapes[b.dataset.range];
+    document.getElementById('line').setAttribute('d', a);
+    document.getElementById('area').setAttribute('d', a + ' V210 H0Z');
+    document.getElementById('line2').setAttribute('d', r);
+  }));
+  document.querySelector('#rows tr').addEventListener('click', () => document.getElementById('drawer').classList.remove('translate-x-full'));
+</script>
+</body>
+</html>

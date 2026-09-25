@@ -22,3 +22,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/.playwright-mcp
+/resources/samples/captures
+/.impeccable/hook.cache.json
+/.impeccable/questions

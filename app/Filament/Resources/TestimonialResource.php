@@ -30,6 +30,9 @@ class TestimonialResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('author_title'),
                 Forms\Components\TextInput::make('company'),
+                Forms\Components\Toggle::make('is_sample')
+                    ->label('Sample testimonial')
+                    ->helperText('Placeholder quotes are never shown on the public site.'),
                 Forms\Components\TextInput::make('sort_order')
                     ->required()
                     ->numeric()
